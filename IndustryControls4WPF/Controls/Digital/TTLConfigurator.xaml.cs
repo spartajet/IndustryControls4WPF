@@ -22,11 +22,7 @@ namespace IndustryControls4WPF.Controls.Digital
             
         }
 
-        private void TtlConfigurator_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.RefreshUnitSize();
-            this.DrawTtl();
-        }
+        
 
         private int _unitHeight;
         private int _unitWidth;
@@ -34,8 +30,23 @@ namespace IndustryControls4WPF.Controls.Digital
         private PathGeometry _pathGeometry;
         private Path _path;
 
-
+        /// <summary>
+        /// 加载后执行事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TTLConfigurator_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.CellOperate();
+            //绘制图形
+            this.RefreshUnitSize();
+            this.InitGraphicToolKit();
+            this.DrawTtl();
+            this.SizeChanged += TtlConfigurator_SizeChanged;
+        }
+
+
+        private void CellOperate()
         {
             //解析设置的码形
             char[] cs = this.TtlString.ToCharArray();
@@ -55,12 +66,6 @@ namespace IndustryControls4WPF.Controls.Digital
                         throw new System.IO.InvalidDataException("TTL 字符串不符合要求，请重新输入");
                 }
             }
-
-            //绘制图形
-            this.RefreshUnitSize();
-            this.InitGraphicToolKit();
-            this.DrawTtl();
-            this.SizeChanged += TtlConfigurator_SizeChanged;
         }
 
         /// <summary>
@@ -71,14 +76,18 @@ namespace IndustryControls4WPF.Controls.Digital
             this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight);
             this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / this.TtlCells.Count);
         }
-
+        /// <summary>
+        /// 初始化绘图工具
+        /// </summary>
         private void InitGraphicToolKit()
         {
             this._path = new Path();
             this._pathGeometry = new PathGeometry();
             this._figure = new PathFigure();
         }
-
+        /// <summary>
+        /// 绘制TTL图像
+        /// </summary>
         private void DrawTtl()
         {
             this._figure.Segments.Clear();
@@ -124,6 +133,15 @@ namespace IndustryControls4WPF.Controls.Digital
             this._path.Stroke = Brushes.Black;
             this.TtlCanvas.Children.Add(this._path);
         }
+        /// <summary>
+        /// 属性改变之后的操作
+        /// </summary>
+        private void PropertiesChangeOperate()
+        {
+            this.CellOperate();
+            this.RefreshUnitSize();
+            this.DrawTtl();
+        }
 
         public List<TtlCell> TtlCells { get; set; }
 
@@ -133,6 +151,8 @@ namespace IndustryControls4WPF.Controls.Digital
 
         private static void ThicknessPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            TtlConfigurator configurator= d as TtlConfigurator;
+            configurator?.PropertiesChangeOperate();
         }
 
         public int Thickness
@@ -147,6 +167,8 @@ namespace IndustryControls4WPF.Controls.Digital
 
         private static void TtlStringChangeCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            TtlConfigurator configurator = d as TtlConfigurator;
+            configurator?.PropertiesChangeOperate();
         }
 
         [Category("Data")]
@@ -165,18 +187,24 @@ namespace IndustryControls4WPF.Controls.Digital
             base.OnRender(drawingContext);
         }
 
-//        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
-//            "Lenght", typeof(int), typeof(TTLConfigurator), new FrameworkPropertyMetadata(16,new PropertyChangedCallback(LengthChangedCallBack)));
-//
-//        private static void LengthChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
-//        {
-//            
-//        }
-//
-//        public int Length
-//        {
-//            get { return (int) GetValue(LengthProperty); }
-//            set { SetValue(LengthProperty, value); }
-//        }
+        private void TtlConfigurator_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.RefreshUnitSize();
+            this.DrawTtl();
+        }
+
+        //        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
+        //            "Lenght", typeof(int), typeof(TTLConfigurator), new FrameworkPropertyMetadata(16,new PropertyChangedCallback(LengthChangedCallBack)));
+        //
+        //        private static void LengthChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        //        {
+        //            
+        //        }
+        //
+        //        public int Length
+        //        {
+        //            get { return (int) GetValue(LengthProperty); }
+        //            set { SetValue(LengthProperty, value); }
+        //        }
     }
 }

@@ -12,7 +12,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <ttl:TtlConfigurator Margin="10"></ttl:TtlConfigurator>
+        <ttl:TtlConfigurator x:Name="TtlConfigurator" Margin="10"></ttl:TtlConfigurator>
         <Button Content="删除" Grid.Row="1" Click="ButtonBase_OnClick"></Button>
     </Grid>
 </Window>

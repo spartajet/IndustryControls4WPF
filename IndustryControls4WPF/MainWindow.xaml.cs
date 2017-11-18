@@ -27,8 +27,7 @@ namespace IndustryControls4WPF
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            CanvasTestWindow canvasTestWindow=new CanvasTestWindow();
-            canvasTestWindow.ShowDialog();
+            this.TtlConfigurator.TtlString = "0011001010110110";
         }
     }
 }
