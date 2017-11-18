@@ -55,6 +55,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CanvasTestWindow.xaml.cs">
+      <DependentUpon>CanvasTestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TTL\TTLCell.cs" />
+    <Compile Include="TTL\TTLCellStatus.cs" />
+    <Page Include="CanvasTestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Digital\TTLConfigurator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -62,6 +75,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controls\Digital\TTLConfigurator.xaml.cs">
+      <DependentUpon>TTLConfigurator.xaml</DependentUpon>
     </Compile>
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

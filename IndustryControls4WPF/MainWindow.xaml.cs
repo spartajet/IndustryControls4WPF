@@ -24,5 +24,11 @@ namespace IndustryControls4WPF
         {
             InitializeComponent();
         }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            CanvasTestWindow canvasTestWindow=new CanvasTestWindow();
+            canvasTestWindow.ShowDialog();
+        }
     }
 }
