@@ -19,6 +19,13 @@ namespace IndustryControls4WPF.Controls.Digital
         {
             this.InitializeComponent();
             this.Loaded += this.TTLConfigurator_Loaded;
+            
+        }
+
+        private void TtlConfigurator_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            this.RefreshUnitSize();
+            this.DrawTtl();
         }
 
         private int _unitHeight;
@@ -53,6 +60,7 @@ namespace IndustryControls4WPF.Controls.Digital
             this.RefreshUnitSize();
             this.InitGraphicToolKit();
             this.DrawTtl();
+            this.SizeChanged += TtlConfigurator_SizeChanged;
         }
 
         /// <summary>
@@ -73,6 +81,8 @@ namespace IndustryControls4WPF.Controls.Digital
 
         private void DrawTtl()
         {
+            this._figure.Segments.Clear();
+            this.TtlCanvas.Children.Clear();
             this._figure.StartPoint = this.TtlCells[0].status == TtlCellStatus.High
                 ? new Point(0, 0)
                 : new Point(0, this._unitHeight);
