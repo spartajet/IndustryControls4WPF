@@ -10,9 +10,9 @@ using System.Windows;
 [assembly: AssemblyTitle("IndustryControls4WPF")]
 [assembly: AssemblyDescription("工业测控程序组件")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("郭晓忠")]
+[assembly: AssemblyCompany("郭晓忠 spartajet.guo@gmail.com")]
 [assembly: AssemblyProduct("IndustryControls4WPF")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © 2001-2017 spartajet, All Rights Reserved")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
