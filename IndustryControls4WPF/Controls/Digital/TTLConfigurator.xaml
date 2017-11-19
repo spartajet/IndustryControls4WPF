@@ -19,7 +19,13 @@
                 <RowDefinition Height="30" />
             </Grid.RowDefinitions>
             <Border BorderThickness="2" Grid.Column="1" Grid.Row="1">
-                <Canvas Name="TtlCanvas"></Canvas>
+                <Canvas Name="TtlCanvas" Background="White">
+                    <Canvas.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Name="SettingMenu" Header="配置码形" Click="SettingMenu_OnClick"></MenuItem>
+                        </ContextMenu>
+                    </Canvas.ContextMenu>
+                </Canvas>
             </Border>
         </Grid>
     </Border>

@@ -19,10 +19,8 @@ namespace IndustryControls4WPF.Controls.Digital
         {
             this.InitializeComponent();
             this.Loaded += this.TTLConfigurator_Loaded;
-            
         }
 
-        
 
         private int _unitHeight;
         private int _unitWidth;
@@ -76,6 +74,7 @@ namespace IndustryControls4WPF.Controls.Digital
             this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight);
             this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / this.TtlCells.Count);
         }
+
         /// <summary>
         /// 初始化绘图工具
         /// </summary>
@@ -85,6 +84,7 @@ namespace IndustryControls4WPF.Controls.Digital
             this._pathGeometry = new PathGeometry();
             this._figure = new PathFigure();
         }
+
         /// <summary>
         /// 绘制TTL图像
         /// </summary>
@@ -125,7 +125,7 @@ namespace IndustryControls4WPF.Controls.Digital
                 {
                     unitConnectLineY = cellEndPointY;
                 }
-                LineSegment unitConnectLine = new LineSegment(new Point(cellEndPointX,unitConnectLineY), true);
+                LineSegment unitConnectLine = new LineSegment(new Point(cellEndPointX, unitConnectLineY), true);
                 this._figure.Segments.Add(unitConnectLine);
             }
             this._pathGeometry.Figures.Add(this._figure);
@@ -133,6 +133,7 @@ namespace IndustryControls4WPF.Controls.Digital
             this._path.Stroke = Brushes.Black;
             this.TtlCanvas.Children.Add(this._path);
         }
+
         /// <summary>
         /// 属性改变之后的操作
         /// </summary>
@@ -151,7 +152,7 @@ namespace IndustryControls4WPF.Controls.Digital
 
         private static void ThicknessPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            TtlConfigurator configurator= d as TtlConfigurator;
+            TtlConfigurator configurator = d as TtlConfigurator;
             configurator?.PropertiesChangeOperate();
         }
 
@@ -193,18 +194,15 @@ namespace IndustryControls4WPF.Controls.Digital
             this.DrawTtl();
         }
 
-        //        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(
-        //            "Lenght", typeof(int), typeof(TTLConfigurator), new FrameworkPropertyMetadata(16,new PropertyChangedCallback(LengthChangedCallBack)));
-        //
-        //        private static void LengthChangedCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        //        {
-        //            
-        //        }
-        //
-        //        public int Length
-        //        {
-        //            get { return (int) GetValue(LengthProperty); }
-        //            set { SetValue(LengthProperty, value); }
-        //        }
+        private void SettingMenu_OnClick(object sender, RoutedEventArgs e)
+        {
+            TtlSettingWindow settingWindow = new TtlSettingWindow() {TtlString = this.TtlString};
+
+            settingWindow.ShowDialog();
+            if (settingWindow.DialogResult == true)
+            {
+                this.TtlString = settingWindow.ResultTtlString;
+            }
+        }
     }
 }

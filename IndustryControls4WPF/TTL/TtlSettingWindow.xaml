@@ -1,0 +1,99 @@
+﻿<Window x:Class="IndustryControls4WPF.TTL.TtlSettingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IndustryControls4WPF.TTL"
+        mc:Ignorable="d"
+        Title="TTL设置对话框" Height="350" Width="300" ResizeMode="NoResize">
+    <Window.Resources>
+        <Style x:Key="OperateRegionStyle">
+            <Setter Property="Control.Margin" Value="3" />
+        </Style>
+        <Style TargetType="TextBox" BasedOn="{StaticResource OperateRegionStyle}">
+            <!--            <Setter Property="VerticalAlignment" Value="Center" />-->
+            <!--            <Setter Property="HorizontalAlignment" Value="Center" />-->
+            <!--            <Setter Property="Height" Value="26"></Setter>-->
+            <!--            <Setter Property="Width" Value="30"></Setter>-->
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type TextBox}">
+                        <Border x:Name="border" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="#FF7F9DB9">
+                            <Grid x:Name="grid" Background="#FFFFFF">
+                                <ScrollViewer x:Name="PART_ContentHost" VerticalAlignment="Center"
+                                              HorizontalAlignment="Center" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="2*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Grid.Column="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Content="总长度" />
+            <TextBox Name="TtlLengthTextBox" Grid.Row="0" Grid.Column="1">16</TextBox>
+        </Grid>
+        <Label Grid.Row="1" Grid.Column="0" Content="高电平区间" />
+        <ListBox Name="HighRegionsListBox" Grid.Row="2" Grid.Column="0" Style="{StaticResource OperateRegionStyle}"
+                 ItemsSource="{Binding HighLevelRegions}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{Binding Path=StartPosition ,UpdateSourceTrigger=PropertyChanged}" />
+                        <TextBlock Text="  ~  " />
+                        <TextBlock Text="{Binding Path=EndPosition,UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <Grid Grid.Row="2" Grid.Column="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <TextBox Name="RegionStartTextBox"
+                     Text="{Binding ElementName=HighRegionsListBox,Path=SelectedItem.StartPosition,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" />
+            <Label Grid.Row="0" Grid.Column="1" Content="~" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBox Name="RegionEndTextBox" Grid.Row="0" Grid.Column="2"
+                     Text="{Binding ElementName=HighRegionsListBox,Path=SelectedItem.EndPosition,UpdateSourceTrigger=PropertyChanged,Mode=OneWay}" />
+            <Button Name="AddRegionButton" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="0" Content="添加" Click="AddRegionButton_OnClick"
+                    Style="{StaticResource OperateRegionStyle}" />
+            <Button Name="DeleteRegionButton" Grid.Row="2" Grid.ColumnSpan="3" Grid.Column="0" Content="删除"
+                    Click="DeleteRegionButton_OnClick"
+                    Style="{StaticResource OperateRegionStyle}" />
+            <Button Name="UpdateRegionButton" Grid.Row="3" Grid.ColumnSpan="3" Grid.Column="0" Content="更新" Click="UpdateRegionButton_OnClick"
+                    Style="{StaticResource OperateRegionStyle}" />
+            <Button Name="DeleteAllRegionsButton" Grid.Row="4" Grid.ColumnSpan="3" Grid.Column="0" Content="清空"
+                    Click="DeleteAllRegionsButton_OnClick"
+                    Style="{StaticResource OperateRegionStyle}" />
+            <Button Name="OkButton" Grid.Row="5" Grid.ColumnSpan="3" Grid.Column="0" Content="确定" Click="OkButton_OnClick"
+                    Style="{StaticResource OperateRegionStyle}" />
+            <Button Name="CancelButton" Grid.Row="6" Grid.ColumnSpan="3" Grid.Column="0" Content="取消" Click="CancelButton_OnClick"
+                    Style="{StaticResource OperateRegionStyle}" />
+        </Grid>
+    </Grid>
+</Window>

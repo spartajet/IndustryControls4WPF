@@ -60,6 +60,9 @@
     </Compile>
     <Compile Include="TTL\TTLCell.cs" />
     <Compile Include="TTL\TTLCellStatus.cs" />
+    <Compile Include="TTL\TtlSettingWindow.xaml.cs">
+      <DependentUpon>TtlSettingWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="CanvasTestWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -83,6 +86,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="TTL\TtlSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
