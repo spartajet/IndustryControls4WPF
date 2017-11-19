@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace IndustryControls4WPF
+namespace IndustryControls4WPF.Test
 {
     /// <summary>
     /// App.xaml 的交互逻辑

@@ -7,11 +7,11 @@ using System.Windows;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("IndustryControls4WPF")]
-[assembly: AssemblyDescription("工业测控程序组件")]
+[assembly: AssemblyTitle("IndustryControls4WPF.Test")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("郭晓忠")]
-[assembly: AssemblyProduct("IndustryControls4WPF")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("IndustryControls4WPF.Test")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

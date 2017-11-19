@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5127DBE2-FE70-4673-BD21-38A7CC2CCC62}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{9D3C084A-9779-4BFF-AC86-1174A50A0C39}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>IndustryControls4WPF</RootNamespace>
-    <AssemblyName>IndustryControls4WPF</AssemblyName>
+    <RootNamespace>IndustryControls4WPF.Test</RootNamespace>
+    <AssemblyName>IndustryControls4WPF.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -34,9 +34,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -54,22 +51,22 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="TTL\TTLCell.cs" />
-    <Compile Include="TTL\TTLCellStatus.cs" />
-    <Compile Include="TTL\TtlSettingWindow.xaml.cs">
-      <DependentUpon>TtlSettingWindow.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Controls\Digital\TTLConfigurator.xaml">
-      <SubType>Designer</SubType>
+    <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="Controls\Digital\TTLConfigurator.xaml.cs">
-      <DependentUpon>TTLConfigurator.xaml</DependentUpon>
-    </Compile>
-    <Page Include="TTL\TtlSettingWindow.xaml">
       <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -94,6 +91,15 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IndustryControls4WPF\IndustryControls4WPF.csproj">
+      <Project>{5127dbe2-fe70-4673-bd21-38a7cc2ccc62}</Project>
+      <Name>IndustryControls4WPF</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
