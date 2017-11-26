@@ -18,6 +18,7 @@ namespace IndustryControls4WPF.Controls.Digital
         public TtlConfigurator()
         {
             this.InitializeComponent();
+            this.InitGraphicToolKit();
             this.Loaded += this.TTLConfigurator_Loaded;
         }
 
@@ -38,7 +39,7 @@ namespace IndustryControls4WPF.Controls.Digital
             this.CellOperate();
             //绘制图形
             this.RefreshUnitSize();
-            this.InitGraphicToolKit();
+            
             this.DrawTtl();
             this.SizeChanged += TtlConfigurator_SizeChanged;
         }
