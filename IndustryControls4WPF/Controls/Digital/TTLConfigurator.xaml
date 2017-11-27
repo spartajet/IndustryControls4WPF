@@ -6,17 +6,17 @@
              xmlns:local="clr-namespace:IndustryControls4WPF.Controls.Digital"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="600">
-    <Border BorderThickness="3" BorderBrush="SaddleBrown">
+    <Border BorderThickness="1" BorderBrush="Black">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="30" />
+                <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30" />
+                <RowDefinition Height="20" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="30" />
+                <RowDefinition Height="20" />
             </Grid.RowDefinitions>
             <Border BorderThickness="2" Grid.Column="1" Grid.Row="1">
                 <Canvas Name="TtlCanvas" Background="White">
