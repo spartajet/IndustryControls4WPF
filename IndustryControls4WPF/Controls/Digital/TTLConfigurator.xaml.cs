@@ -39,7 +39,6 @@ namespace IndustryControls4WPF.Controls.Digital
             this.CellOperate();
             //绘制图形
             this.RefreshUnitSize();
-            
             this.DrawTtl();
             this.SizeChanged += TtlConfigurator_SizeChanged;
         }
@@ -145,7 +144,12 @@ namespace IndustryControls4WPF.Controls.Digital
             this.DrawTtl();
         }
 
+        /// <summary>
+        /// TTL 单元对象
+        /// </summary>
         public List<TtlCell> TtlCells { get; set; }
+
+        #region TTL的thickness依赖配置项(未使用)
 
         public static readonly DependencyProperty ThicknessProperty = DependencyProperty.Register(
             "Thickness", typeof(int), typeof(TtlConfigurator),
@@ -162,6 +166,10 @@ namespace IndustryControls4WPF.Controls.Digital
             get { return (int) this.GetValue(ThicknessProperty); }
             set { this.SetValue(ThicknessProperty, value); }
         }
+
+        #endregion
+
+        #region TTLString依赖配置项
 
         public static readonly DependencyProperty TtlStringProperty = DependencyProperty.Register(
             "TtlString", typeof(string), typeof(TtlConfigurator),
@@ -181,6 +189,30 @@ namespace IndustryControls4WPF.Controls.Digital
             set { this.SetValue(TtlStringProperty, value); }
         }
 
+        #endregion
+
+        #region 标题依赖配置项
+
+        public static readonly DependencyProperty TitleProperty = DependencyProperty.Register(
+            "Title", typeof(string), typeof(TtlConfigurator),
+            new FrameworkPropertyMetadata("TTL码形配置", TitleChangeCallBack));
+
+        private static void TitleChangeCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            TtlConfigurator configurator = d as TtlConfigurator;
+            configurator.TitleLable.Content = configurator.Title;
+        }
+
+        [Category("Data")]
+        [DisplayName("标题")]
+        public string Title
+        {
+            get { return (string) GetValue(TitleProperty); }
+            set { SetValue(TitleProperty, value); }
+        }
+
+        #endregion
+
 
         protected override void OnRender(DrawingContext drawingContext)
         {
@@ -189,12 +221,22 @@ namespace IndustryControls4WPF.Controls.Digital
             base.OnRender(drawingContext);
         }
 
+        /// <summary>
+        /// 大小改变事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TtlConfigurator_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.RefreshUnitSize();
             this.DrawTtl();
         }
 
+        /// <summary>
+        /// 右击配置菜单事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SettingMenu_OnClick(object sender, RoutedEventArgs e)
         {
             TtlSettingWindow settingWindow = new TtlSettingWindow() {TtlString = this.TtlString};

@@ -4,29 +4,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:IndustryControls4WPF.Controls.Digital"
+             xmlns:math="http://hexinnovation.com/math"
              mc:Ignorable="d"
              d:DesignHeight="200" d:DesignWidth="600">
+    <UserControl.Resources>
+        <math:MathConverter x:Key="math" />
+    </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="Black">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="25" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
+                <RowDefinition Height="25" />
                 <RowDefinition Height="*" />
-                <RowDefinition Height="20" />
+                <RowDefinition Height="25" />
             </Grid.RowDefinitions>
-            <Border BorderThickness="2" Grid.Column="1" Grid.Row="1">
-                <Canvas Name="TtlCanvas" Background="White">
-                    <Canvas.ContextMenu>
-                        <ContextMenu>
-                            <MenuItem Name="SettingMenu" Header="配置码形" Click="SettingMenu_OnClick"></MenuItem>
-                        </ContextMenu>
-                    </Canvas.ContextMenu>
-                </Canvas>
-            </Border>
+            <!--            <Border BorderThickness="2" Grid.Column="1" Grid.Row="1">-->
+            <Label Name="TitleLable" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" FontSize="10">TTL码形配置</Label>
+            <Canvas Name="LeftCanvas" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Background="White">
+                <TextBlock Text="H" Canvas.Top="18" Canvas.Left="5" />
+                <TextBlock Text="L" Canvas.Bottom="20" Canvas.Left="5" />
+                <Line X1="20" X2="20" Y1="10"
+                      Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-10}"
+                      StrokeThickness="1" Stroke="Black" />
+                <Line X1="15" Y1="25" X2="20" Y2="25" Stroke="Black" StrokeThickness="1" />
+                <Line X1="15"
+                      Y1="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-25}"
+                      X2="20"
+                      Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-25}"
+                      Stroke="Black" StrokeThickness="1" />
+            </Canvas>
+
+            <Canvas Name="TtlCanvas" Background="White" Grid.Column="1" Grid.Row="1">
+                <Canvas.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Name="SettingMenu" Header="配置码形" Click="SettingMenu_OnClick" />
+                    </ContextMenu>
+                </Canvas.ContextMenu>
+            </Canvas>
+            <Canvas Name="BottomCanvas" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Background="White">
+                <Line X1="-20" Y1="5"
+                      X2="{Binding ElementName=BottomCanvas,Path=ActualWidth,Converter={StaticResource math},ConverterParameter=x-10}"
+                      Y2="5" StrokeThickness="1" Stroke="Black" />
+            </Canvas>
         </Grid>
     </Border>
 </UserControl>
