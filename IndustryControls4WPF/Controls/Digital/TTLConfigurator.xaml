@@ -13,7 +13,7 @@
     <Border BorderThickness="1" BorderBrush="Black">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25" />
+                <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="20" />
             </Grid.ColumnDefinitions>
@@ -46,8 +46,8 @@
                 </Canvas.ContextMenu>
             </Canvas>
             <Canvas Name="BottomCanvas" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Background="White">
-                <Line X1="-20" Y1="5"
-                      X2="{Binding ElementName=BottomCanvas,Path=ActualWidth,Converter={StaticResource math},ConverterParameter=x-10}"
+                <Line Name="XLine" X1="-20" Y1="5"
+                      X2="{Binding ElementName=BottomCanvas,Path=ActualWidth,Converter={StaticResource math},ConverterParameter=x}"
                       Y2="5" StrokeThickness="1" Stroke="Black" />
             </Canvas>
         </Grid>

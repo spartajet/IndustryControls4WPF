@@ -40,6 +40,7 @@ namespace IndustryControls4WPF.Controls.Digital
             //绘制图形
             this.RefreshUnitSize();
             this.DrawTtl();
+            this.DrawXScale();
             this.SizeChanged += TtlConfigurator_SizeChanged;
         }
 
@@ -142,6 +143,45 @@ namespace IndustryControls4WPF.Controls.Digital
             this.CellOperate();
             this.RefreshUnitSize();
             this.DrawTtl();
+            this.DrawXScale();
+        }
+
+        private void DrawXScale()
+        {
+            for (var i = 0; i < this.BottomCanvas.Children.Count; i++)
+            {
+                var line = BottomCanvas.Children[i] as Line;
+                if (line != null && line.Name == "XLine")
+                {
+                    continue;
+                }
+                BottomCanvas.Children.RemoveAt(i--);
+            }
+
+            for (var i = 0; i < this.TtlCells.Count; i++)
+            {
+                var scaleHeight = (i + 1) % 4 == 0 ? 10 : 5;
+                var tempScaleLine = new Line
+                {
+                    X1 = this._unitWidth * (i + 1),
+                    Y1 = 5,
+                    X2 = this._unitWidth * (i + 1),
+                    Y2 = 5 + scaleHeight,
+                    Stroke = Brushes.Black,
+                    StrokeThickness = 1
+                };
+                this.BottomCanvas.Children.Add(tempScaleLine);
+                if ((i + 1) % 4 == 0)
+                {
+                    var scaleText = new TextBlock
+                    {
+                        Text = (i + 1).ToString()
+                    };
+                    this.BottomCanvas.Children.Add(scaleText);
+                    Canvas.SetRight(scaleText, this.ActualWidth - this._unitWidth * (i + 1)-20);
+                    Canvas.SetBottom(scaleText, 3);
+                }
+            }
         }
 
         /// <summary>
@@ -230,6 +270,7 @@ namespace IndustryControls4WPF.Controls.Digital
         {
             this.RefreshUnitSize();
             this.DrawTtl();
+            this.DrawXScale();
         }
 
         /// <summary>
