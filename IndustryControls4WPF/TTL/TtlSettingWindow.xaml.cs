@@ -31,7 +31,7 @@ namespace IndustryControls4WPF.TTL
 
         public string ResultTtlString { get; set; }
         private HighLevelRegion _selectHighLevelRegion;
-        
+
 
         /// <summary>
         /// 加载后事件
@@ -101,6 +101,7 @@ namespace IndustryControls4WPF.TTL
                     {
                         region.EndPosition = i;
                     }
+
                     if (i != chars.Length - 1) continue;
                     settingWindow.HighLevelRegions.Add(region);
                     region = null;
@@ -138,27 +139,12 @@ namespace IndustryControls4WPF.TTL
 
             foreach (var region in this.HighLevelRegions)
             {
-                for (int j = region.StartPosition; j < region.EndPosition; j++)
+                for (int j = region.StartPosition; j <= region.EndPosition; j++)
                 {
                     resultCharArray[j] = '1';
                 }
             }
-//            for (int i = 0; i < totalLength; i++)
-//            {
-//                if (i >= this.HighLevelRegions[listPosition].StartPosition &&
-//                    i <= this.HighLevelRegions[listPosition].EndPosition)
-//                {
-//                    resultCharArray[i] = '1';
-//                }
-//                else
-//                {
-//                    resultCharArray[i] = '0';
-//                    if (i > this.HighLevelRegions[listPosition].EndPosition&&listPosition<this.HighLevelRegions.Count)
-//                    {
-//                        listPosition++;
-//                    }
-//                }
-//            }
+
             this.ResultTtlString = new string(resultCharArray);
         }
 
@@ -200,6 +186,7 @@ namespace IndustryControls4WPF.TTL
                 MessageBox.Show("高电平起始结束位置冲突", "设置错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
             selectedRegion.StartPosition = start;
             selectedRegion.EndPosition = end;
             this.HighRegionsListBox.Items.Refresh();
@@ -219,9 +206,11 @@ namespace IndustryControls4WPF.TTL
                 MessageBox.Show("高电平起始结束位置冲突", "设置错误", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
             HighLevelRegion newRegion = new HighLevelRegion(start, end);
             this.HighLevelRegions.Insert(this.FindRightPosition4NewRegion(start), newRegion);
         }
+
         /// <summary>
         /// 确认按钮事件
         /// </summary>
@@ -233,6 +222,7 @@ namespace IndustryControls4WPF.TTL
             this.GenerateTtlString();
             this.Close();
         }
+
         /// <summary>
         /// 取消按钮事件
         /// </summary>
@@ -259,17 +249,20 @@ namespace IndustryControls4WPF.TTL
                 {
                     continue;
                 }
+
                 if (start >= region.StartPosition - 1 && start <= region.EndPosition + 1)
                 {
                     legal = false;
                     break;
                 }
+
                 if (end >= region.StartPosition - 1 && end <= region.EndPosition + 1)
                 {
                     legal = false;
                     break;
                 }
             }
+
             return legal;
         }
 
@@ -287,11 +280,9 @@ namespace IndustryControls4WPF.TTL
                     return i;
                 }
             }
+
             return this.HighLevelRegions.Count;
         }
-
-
-        
     }
 
     /// <summary>
@@ -316,6 +307,7 @@ namespace IndustryControls4WPF.TTL
                 {
                     throw new Exception("开始位置大于结束位置，请重新设置！");
                 }
+
                 this._startPosition = value;
             }
         }
@@ -337,6 +329,7 @@ namespace IndustryControls4WPF.TTL
                 {
                     throw new Exception("开始位置大于结束位置，请重新设置！");
                 }
+
                 this._endPosition = value;
             }
         }
@@ -356,6 +349,7 @@ namespace IndustryControls4WPF.TTL
             {
                 throw new Exception("开始位置大于结束位置，请重新设置！");
             }
+
             this._startPosition = start;
             this._endPosition = end;
         }

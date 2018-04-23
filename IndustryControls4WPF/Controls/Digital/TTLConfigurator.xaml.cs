@@ -72,7 +72,7 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void RefreshUnitSize()
         {
-            this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight);
+            this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight)-1;
             this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / this.TtlCells.Count);
         }
 

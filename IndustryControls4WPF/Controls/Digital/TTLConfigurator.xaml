@@ -11,7 +11,7 @@
         <math:MathConverter x:Key="math" />
     </UserControl.Resources>
     <Border BorderThickness="1" BorderBrush="Black">
-        <Grid>
+        <Grid Background="White">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="*" />
@@ -26,14 +26,14 @@
             <Label Name="TitleLable" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" FontSize="10">TTL码形配置</Label>
             <Canvas Name="LeftCanvas" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Background="White">
                 <TextBlock Text="H" Canvas.Top="18" Canvas.Left="5" />
-                <TextBlock Text="L" Canvas.Bottom="20" Canvas.Left="5" />
-                <Line X1="20" X2="20" Y1="10"
+                <TextBlock Text="L" Canvas.Bottom="19" Canvas.Left="5" />
+                <Line X1="19" X2="19" Y1="10"
                       Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-10}"
                       StrokeThickness="1" Stroke="Black" />
-                <Line X1="15" Y1="25" X2="20" Y2="25" Stroke="Black" StrokeThickness="1" />
+                <Line X1="15" Y1="25" X2="19" Y2="25" Stroke="Black" StrokeThickness="1" />
                 <Line X1="15"
                       Y1="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-25}"
-                      X2="20"
+                      X2="19"
                       Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-25}"
                       Stroke="Black" StrokeThickness="1" />
             </Canvas>
