@@ -131,22 +131,34 @@ namespace IndustryControls4WPF.TTL
             int listPosition = 0;
             int totalLength = Convert.ToInt32(this.TtlLengthTextBox.Text);
             char[] resultCharArray = new char[totalLength];
-            for (int i = 0; i < totalLength; i++)
+            for (var i = 0; i < resultCharArray.Length; i++)
             {
-                if (i >= this.HighLevelRegions[listPosition].StartPosition &&
-                    i <= this.HighLevelRegions[listPosition].EndPosition)
+                resultCharArray[i] = '0';
+            }
+
+            foreach (var region in this.HighLevelRegions)
+            {
+                for (int j = region.StartPosition; j < region.EndPosition; j++)
                 {
-                    resultCharArray[i] = '1';
-                }
-                else
-                {
-                    resultCharArray[i] = '0';
-                    if (i > this.HighLevelRegions[listPosition].EndPosition)
-                    {
-                        listPosition++;
-                    }
+                    resultCharArray[j] = '1';
                 }
             }
+//            for (int i = 0; i < totalLength; i++)
+//            {
+//                if (i >= this.HighLevelRegions[listPosition].StartPosition &&
+//                    i <= this.HighLevelRegions[listPosition].EndPosition)
+//                {
+//                    resultCharArray[i] = '1';
+//                }
+//                else
+//                {
+//                    resultCharArray[i] = '0';
+//                    if (i > this.HighLevelRegions[listPosition].EndPosition&&listPosition<this.HighLevelRegions.Count)
+//                    {
+//                        listPosition++;
+//                    }
+//                }
+//            }
             this.ResultTtlString = new string(resultCharArray);
         }
 
