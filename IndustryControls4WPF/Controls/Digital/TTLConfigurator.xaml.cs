@@ -145,7 +145,9 @@ namespace IndustryControls4WPF.Controls.Digital
             this.DrawTtl();
             this.DrawXScale();
         }
-
+        /// <summary>
+        /// 绘制Scale
+        /// </summary>
         private void DrawXScale()
         {
             for (var i = 0; i < this.BottomCanvas.Children.Count; i++)
@@ -175,7 +177,7 @@ namespace IndustryControls4WPF.Controls.Digital
                 {
                     var scaleText = new TextBlock
                     {
-                        Text = (i + 1).ToString()
+                        Text = ((i + 1)/2).ToString()
                     };
                     this.BottomCanvas.Children.Add(scaleText);
                     Canvas.SetRight(scaleText, this.ActualWidth - this._unitWidth * (i + 1)-20);
