@@ -33,11 +33,25 @@ namespace IndustryControls4WPF.Controls.Digital
         // private PathGeometry _pathGeometry;
         // private Path _path;
         private string _titleString="TTL Setting";
-
+        public static ObservableCollection<TtlSection> DefaulTtlSections { get; set; } = new ObservableCollection<TtlSection>()
+        {
+            new TtlSection()
+            {
+                Length = 32,
+                Status = TtlStatus.High
+            },
+            new TtlSection()
+            {
+                Length = 32,
+                Status = TtlStatus.Low
+            }
+        };
         /// <summary>
         /// TTL 片段对象
         /// </summary>
-        public List<TtlSection> TtlSections { get; set; } = DefaulTtlSections.ToList();
+        // public List<TtlSection> TtlSections { get; set; } = DefaulTtlSections.ToList();
+
+        // private int _scaleInterval = 4;
 
         /// <summary>
         /// 加载后执行事件
@@ -158,7 +172,7 @@ namespace IndustryControls4WPF.Controls.Digital
 
             for (int i = 0; i < totalCount; i++)
             {
-                int scaleHeight = (i + 1) % 4 == 0 ? 10 : 5;
+                int scaleHeight = (i + 1) % this.ScaleInterval == 0 ? 10 : 5;
                 Line tempScaleLine = new Line
                 {
                     X1 = this._unitWidth * (i + 1),
@@ -169,7 +183,7 @@ namespace IndustryControls4WPF.Controls.Digital
                     StrokeThickness = 1
                 };
                 this.BottomCanvas.Children.Add(tempScaleLine);
-                if ((i + 1) % 4 == 0)
+                if ((i + 1) % this.ScaleInterval == 0)
                 {
                     TextBlock scaleText = new TextBlock
                     {
@@ -196,7 +210,8 @@ namespace IndustryControls4WPF.Controls.Digital
             TtlConfigurator configurator = d as TtlConfigurator;
             configurator?.PropertiesChangeOperate();
         }
-
+        [Category("Data")]
+        [DisplayName("线条粗细")]
         public int Thickness
         {
             get { return (int) this.GetValue(ThicknessProperty); }
@@ -206,18 +221,37 @@ namespace IndustryControls4WPF.Controls.Digital
         #endregion
 
         public static readonly DependencyProperty TtlSectionProperty = DependencyProperty.Register(
-            "PropertyType", typeof(ObservableCollection<TtlSection>), typeof(TtlConfigurator), new FrameworkPropertyMetadata(DefaulTtlSections, TtlSectionPropertyCallBack));
+            "PropertyType", typeof(ObservableCollection<TtlSection>), typeof(TtlConfigurator), new FrameworkPropertyMetadata(defaultValue: DefaulTtlSections, TtlSectionPropertyCallBack));
 
         private static void TtlSectionPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             TtlConfigurator configurator = d as TtlConfigurator;
-            configurator.TtlSections = ((ObservableCollection<TtlSection>)(e.NewValue)).ToList();
+            // configurator.TtlSections = ((ObservableCollection<TtlSection>)(e.NewValue)).ToList();
+        }
+        [Category("Data")]
+        [DisplayName("Section")]
+        public ObservableCollection<TtlSection> TtlSections
+        {
+            get
+            {
+                return (ObservableCollection<TtlSection>) GetValue(TtlSectionProperty);
+            }
+            set { SetValue(TtlSectionProperty, value); }
         }
 
-        public ObservableCollection<TtlSection> TtlSection
+        public static readonly DependencyProperty ScaleIntervalProperty = DependencyProperty.Register(
+            "ScaleInterval", typeof(int), typeof(TtlConfigurator), new FrameworkPropertyMetadata(4,ScaleIntervalPropertyCallBack));
+
+        private static void ScaleIntervalPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            get { return (ObservableCollection<TtlSection>) GetValue(TtlSectionProperty); }
-            set { SetValue(TtlSectionProperty, value); }
+            TtlConfigurator configurator = d as TtlConfigurator;
+            // configurator.s
+        }
+
+        public int ScaleInterval
+        {
+            get { return (int) GetValue(ScaleIntervalProperty); }
+            set { SetValue(ScaleIntervalProperty, value); }
         }
 
         #region TTLString依赖配置项
@@ -318,18 +352,6 @@ namespace IndustryControls4WPF.Controls.Digital
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        public static ObservableCollection<TtlSection> DefaulTtlSections=new ObservableCollection<TtlSection>()
-        {
-            new TtlSection()
-            {
-                Length = 32,
-                Status = TtlStatus.High
-            },
-            new TtlSection()
-            {
-                Length = 32,
-                Status = TtlStatus.Low
-            }
-        };
+        
     }
 }
