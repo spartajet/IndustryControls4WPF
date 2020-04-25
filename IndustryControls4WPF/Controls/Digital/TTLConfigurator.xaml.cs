@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using IndustryControls4WPF.TTL;
 using System.Windows.Shapes;
+using IndustryControls4WPF.Annotations;
 
 namespace IndustryControls4WPF.Controls.Digital
 {
@@ -13,7 +15,7 @@ namespace IndustryControls4WPF.Controls.Digital
     /// <summary>
     /// TTLConfigurator.xaml 的交互逻辑
     /// </summary>
-    public partial class TtlConfigurator : UserControl
+    public partial class TtlConfigurator : UserControl,INotifyPropertyChanged
     {
         public TtlConfigurator()
         {
@@ -28,6 +30,7 @@ namespace IndustryControls4WPF.Controls.Digital
         private PathFigure _figure;
         private PathGeometry _pathGeometry;
         private Path _path;
+        private string _titleString="TTL Setting";
 
         /// <summary>
         /// 加载后执行事件
@@ -41,7 +44,7 @@ namespace IndustryControls4WPF.Controls.Digital
             this.RefreshUnitSize();
             this.DrawTtl();
             this.DrawXScale();
-            this.SizeChanged += TtlConfigurator_SizeChanged;
+            this.SizeChanged += this.TtlConfigurator_SizeChanged;
         }
 
 
@@ -150,20 +153,21 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void DrawXScale()
         {
-            for (var i = 0; i < this.BottomCanvas.Children.Count; i++)
+            for (int i = 0; i < this.BottomCanvas.Children.Count; i++)
             {
-                var line = BottomCanvas.Children[i] as Line;
+                Line line = this.BottomCanvas.Children[i] as Line;
                 if (line != null && line.Name == "XLine")
                 {
                     continue;
                 }
-                BottomCanvas.Children.RemoveAt(i--);
+
+                this.BottomCanvas.Children.RemoveAt(i--);
             }
 
-            for (var i = 0; i < this.TtlCells.Count; i++)
+            for (int i = 0; i < this.TtlCells.Count; i++)
             {
-                var scaleHeight = (i + 1) % 4 == 0 ? 10 : 5;
-                var tempScaleLine = new Line
+                int scaleHeight = (i + 1) % 4 == 0 ? 10 : 5;
+                Line tempScaleLine = new Line
                 {
                     X1 = this._unitWidth * (i + 1),
                     Y1 = 5,
@@ -175,9 +179,10 @@ namespace IndustryControls4WPF.Controls.Digital
                 this.BottomCanvas.Children.Add(tempScaleLine);
                 if ((i + 1) % 4 == 0)
                 {
-                    var scaleText = new TextBlock
+                    TextBlock scaleText = new TextBlock
                     {
-                        Text = ((i + 1)/2).ToString()
+                        Text = ((i + 1)).ToString(),
+                        FontSize = 8
                     };
                     this.BottomCanvas.Children.Add(scaleText);
                     Canvas.SetRight(scaleText, this.ActualWidth - this._unitWidth * (i + 1)-20);
@@ -242,15 +247,26 @@ namespace IndustryControls4WPF.Controls.Digital
         private static void TitleChangeCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             TtlConfigurator configurator = d as TtlConfigurator;
-            configurator.TitleLable.Content = configurator.Title;
+            // configurator.TitleLable.Content = configurator.Title;
+            configurator.TitleString = configurator.Title;
         }
 
         [Category("Data")]
-        [DisplayName("标题")]
+        [DisplayName("Title")]
         public string Title
         {
-            get { return (string) GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
+            get => (string) this.GetValue(TitleProperty);
+            set => this.SetValue(TitleProperty, value);
+        }
+
+        public string TitleString
+        {
+            get => this._titleString;
+            set
+            {
+                this._titleString = value;
+                this.OnPropertyChanged("TitleString");
+            }
         }
 
         #endregion
@@ -289,6 +305,14 @@ namespace IndustryControls4WPF.Controls.Digital
             {
                 this.TtlString = settingWindow.ResultTtlString;
             }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
