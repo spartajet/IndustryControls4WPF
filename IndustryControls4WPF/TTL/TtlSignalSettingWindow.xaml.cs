@@ -61,30 +61,31 @@ namespace IndustryControls4WPF.TTL
             if (this.StandardTtlRadioButton.IsChecked == true)
             {
                 this.TtlSections.Clear();
+                int count = Convert.ToInt32(this.StandardTtlLengthTextBox.Text);
+                TtlStatus firstStatus = (TtlStatus)Convert.ToInt32(this.StandardTtlStatusCombobox.SelectedIndex);
+                TtlStatus secondStatus = firstStatus == TtlStatus.High ? TtlStatus.Low : TtlStatus.High;
+                for (int i = 0; i < count; i++)
+                {
+                    if (i % 2 == 0)
+                    {
+                        this.TtlSections.Add(new TtlSection()
+                        {
+                            Length = 1,
+                            Status = firstStatus
+                        });
+                    }
+                    else
+                    {
+                        this.TtlSections.Add(new TtlSection()
+                        {
+                            Length = 1,
+                            Status = secondStatus
+                        });
+                    }
+                }
             }
 
-            int count = Convert.ToInt32(this.StandardTtlLengthTextBox.Text);
-            TtlStatus firstStatus = (TtlStatus) Convert.ToInt32(this.StandardTtlStatusCombobox.SelectedIndex);
-            TtlStatus secondStatus = firstStatus == TtlStatus.High ? TtlStatus.Low : TtlStatus.High;
-            for (int i = 0; i < count; i++)
-            {
-                if (i % 2 == 0)
-                {
-                    this.TtlSections.Add(new TtlSection()
-                    {
-                        Length = 1,
-                        Status = firstStatus
-                    });
-                }
-                else
-                {
-                    this.TtlSections.Add(new TtlSection()
-                    {
-                        Length = 1,
-                        Status = secondStatus
-                    });
-                }
-            }
+           
 
             this.DialogResult = true;
             this.Close();
@@ -94,6 +95,16 @@ namespace IndustryControls4WPF.TTL
         {
             this.DialogResult = false;
             this.Close();
+        }
+
+        private void DeleteRowButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            int row = this.DataGrid.SelectedIndex;
+            if (row==-1)
+            {
+                return;
+            }
+            this.TtlSections.RemoveAt(row);
         }
     }
 }

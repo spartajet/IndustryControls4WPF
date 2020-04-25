@@ -52,8 +52,8 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <RadioButton Name="CustomTtlRadioButton" Grid.Column="0" Content="自定义TTL" Margin="5" GroupName="TTLTypeGroup" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" IsChecked="True"></RadioButton>
-                <Button Grid.Row="0" Grid.Column="1" Content="新增" Margin="5" Name="AddNewRowButton" IsEnabled="{Binding ElementName=CustomTtlRadioButton,Path=IsChecked}"></Button>
-                <Button Grid.Row="0" Grid.Column="2" Content="删除" Margin="5" Name="DeleteRowButton" IsEnabled="{Binding ElementName=CustomTtlRadioButton,Path=IsChecked}"></Button>
+                <!-- <Button Grid.Row="0" Grid.Column="1" Content="新增" Margin="5" Name="AddNewRowButton" IsEnabled="{Binding ElementName=CustomTtlRadioButton,Path=IsChecked}"></Button> -->
+                <Button Grid.Row="0" Grid.Column="1" Content="删除" Margin="5" Name="DeleteRowButton" IsEnabled="{Binding ElementName=CustomTtlRadioButton,Path=IsChecked}" Click="DeleteRowButton_OnClick"></Button>
                 <DataGrid Name="DataGrid" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4" AutoGenerateColumns="False" Margin="5" RowHeight="20" ItemsSource="{Binding TtlSections}" IsEnabled="{Binding ElementName=CustomTtlRadioButton,Path=IsChecked}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="长度" Width="*" Binding="{Binding Path=Length}"></DataGridTextColumn>
