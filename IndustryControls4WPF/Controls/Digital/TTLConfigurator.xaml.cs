@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -27,10 +29,15 @@ namespace IndustryControls4WPF.Controls.Digital
 
         private int _unitHeight;
         private int _unitWidth;
-        private PathFigure _figure;
-        private PathGeometry _pathGeometry;
-        private Path _path;
+        // private PathFigure _figure;
+        // private PathGeometry _pathGeometry;
+        // private Path _path;
         private string _titleString="TTL Setting";
+
+        /// <summary>
+        /// TTL 片段对象
+        /// </summary>
+        public List<TtlSection> TtlSections { get; set; } = DefaulTtlSections.ToList();
 
         /// <summary>
         /// 加载后执行事件
@@ -51,23 +58,23 @@ namespace IndustryControls4WPF.Controls.Digital
         private void CellOperate()
         {
             //解析设置的码形
-            char[] cs = this.TtlString.ToCharArray();
-            this.TtlCells = new List<TtlCell>(cs.Length);
-            for (int i = 0; i < cs.Length; i++)
-            {
-                char c = cs[i];
-                switch (c)
-                {
-                    case '0':
-                        this.TtlCells.Add(new TtlCell(i, TtlCellStatus.Low));
-                        break;
-                    case '1':
-                        this.TtlCells.Add(new TtlCell(i, TtlCellStatus.High));
-                        break;
-                    default:
-                        throw new System.IO.InvalidDataException("TTL 字符串不符合要求，请重新输入");
-                }
-            }
+            // char[] cs = this.TtlString.ToCharArray();
+            // this.TtlCells = new List<TtlCell>(cs.Length);
+            // for (int i = 0; i < cs.Length; i++)
+            // {
+            //     char c = cs[i];
+            //     switch (c)
+            //     {
+            //         case '0':
+            //             this.TtlCells.Add(new TtlCell(i, TtlCellStatus.Low));
+            //             break;
+            //         case '1':
+            //             this.TtlCells.Add(new TtlCell(i, TtlCellStatus.High));
+            //             break;
+            //         default:
+            //             throw new System.IO.InvalidDataException("TTL 字符串不符合要求，请重新输入");
+            //     }
+            // }
         }
 
         /// <summary>
@@ -75,8 +82,9 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void RefreshUnitSize()
         {
+            int totalCount = this.TtlSections.Select(t => t.Length).Sum();
             this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight)-1;
-            this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / this.TtlCells.Count);
+            this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / totalCount);
         }
 
         /// <summary>
@@ -84,9 +92,9 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void InitGraphicToolKit()
         {
-            this._path = new Path();
-            this._pathGeometry = new PathGeometry();
-            this._figure = new PathFigure();
+            // this._path = new Path();
+            // this._pathGeometry = new PathGeometry();
+            // this._figure = new PathFigure();
         }
 
         /// <summary>
@@ -94,48 +102,31 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void DrawTtl()
         {
-            this._figure.Segments.Clear();
+            // this._figure.Segments.Clear();
             this.TtlCanvas.Children.Clear();
-            this._figure.StartPoint = this.TtlCells[0].status == TtlCellStatus.High
-                ? new Point(0, 0)
-                : new Point(0, this._unitHeight);
-            for (int i = 0; i < this.TtlCells.Count; i++)
+            Polyline polyline=new Polyline()
             {
-                TtlCell cell = this.TtlCells[i];
-                TtlCellStatus cellStatus = cell.status;
-                int cellEndPointX = (i + 1) * this._unitWidth;
-                int cellEndPointY = cellStatus == TtlCellStatus.High ? 0 : this._unitHeight;
-                //画本单元的末尾点
-                LineSegment unitLine =
-                    new LineSegment(
-                        new Point(cellEndPointX, cellEndPointY), true);
-                this._figure.Segments.Add(unitLine);
-                if (i >= this.TtlCells.Count - 1)
-                {
-                    continue;
-                }
-                int unitConnectLineY;
-                TtlCell nextCell = this.TtlCells[i + 1];
-                TtlCellStatus nextCllCellStatus = nextCell.status;
-                if (cellStatus == TtlCellStatus.High && nextCllCellStatus == TtlCellStatus.Low)
-                {
-                    unitConnectLineY = this._unitHeight;
-                }
-                else if (cellStatus == TtlCellStatus.Low && nextCllCellStatus == TtlCellStatus.High)
-                {
-                    unitConnectLineY = 0;
-                }
-                else
-                {
-                    unitConnectLineY = cellEndPointY;
-                }
-                LineSegment unitConnectLine = new LineSegment(new Point(cellEndPointX, unitConnectLineY), true);
-                this._figure.Segments.Add(unitConnectLine);
+                Stroke = Brushes.Black
+            };
+            // this._figure.StartPoint = this.TtlSections[0].Status == TtlStatus.High
+            //     ? new Point(0, 0)
+            //     : new Point(0, this._unitHeight);
+            int tempCellCount = 0;
+            foreach (TtlSection section in this.TtlSections)
+            {
+                TtlStatus sectionStatus = section.Status;
+                int sectionStartX = tempCellCount * this._unitWidth;
+                int sectionStartY= sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
+                polyline.Points.Add(new Point(sectionStartX, sectionStartY));
+                tempCellCount += section.Length;
+                int cellEndPointX = tempCellCount * this._unitWidth;
+                int cellEndPointY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
+                polyline.Points.Add(new Point(cellEndPointX, cellEndPointY));
             }
-            this._pathGeometry.Figures.Add(this._figure);
-            this._path.Data = this._pathGeometry;
-            this._path.Stroke = Brushes.Black;
-            this.TtlCanvas.Children.Add(this._path);
+            // this._pathGeometry.Figures.Add(this._figure);
+            // this._path.Data = this._pathGeometry;
+            // this._path.Stroke = Brushes.Black;
+            this.TtlCanvas.Children.Add(polyline);
         }
 
         /// <summary>
@@ -153,6 +144,7 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void DrawXScale()
         {
+            int totalCount = this.TtlSections.Select(t => t.Length).Sum();
             for (int i = 0; i < this.BottomCanvas.Children.Count; i++)
             {
                 Line line = this.BottomCanvas.Children[i] as Line;
@@ -164,7 +156,7 @@ namespace IndustryControls4WPF.Controls.Digital
                 this.BottomCanvas.Children.RemoveAt(i--);
             }
 
-            for (int i = 0; i < this.TtlCells.Count; i++)
+            for (int i = 0; i < totalCount; i++)
             {
                 int scaleHeight = (i + 1) % 4 == 0 ? 10 : 5;
                 Line tempScaleLine = new Line
@@ -191,10 +183,7 @@ namespace IndustryControls4WPF.Controls.Digital
             }
         }
 
-        /// <summary>
-        /// TTL 单元对象
-        /// </summary>
-        public List<TtlCell> TtlCells { get; set; }
+
 
         #region TTL的thickness依赖配置项(未使用)
 
@@ -216,25 +205,40 @@ namespace IndustryControls4WPF.Controls.Digital
 
         #endregion
 
-        #region TTLString依赖配置项
+        public static readonly DependencyProperty TtlSectionProperty = DependencyProperty.Register(
+            "PropertyType", typeof(ObservableCollection<TtlSection>), typeof(TtlConfigurator), new FrameworkPropertyMetadata(DefaulTtlSections, TtlSectionPropertyCallBack));
 
-        public static readonly DependencyProperty TtlStringProperty = DependencyProperty.Register(
-            "TtlString", typeof(string), typeof(TtlConfigurator),
-            new FrameworkPropertyMetadata("0101010101010101", TtlStringChangeCallBack));
-
-        private static void TtlStringChangeCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void TtlSectionPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             TtlConfigurator configurator = d as TtlConfigurator;
-            configurator?.PropertiesChangeOperate();
+            configurator.TtlSections = ((ObservableCollection<TtlSection>)(e.NewValue)).ToList();
         }
 
-        [Category("Data")]
-        [DisplayName("TTL文本")]
-        public string TtlString
+        public ObservableCollection<TtlSection> TtlSection
         {
-            get { return (string) this.GetValue(TtlStringProperty); }
-            set { this.SetValue(TtlStringProperty, value); }
+            get { return (ObservableCollection<TtlSection>) GetValue(TtlSectionProperty); }
+            set { SetValue(TtlSectionProperty, value); }
         }
+
+        #region TTLString依赖配置项
+
+        // public static readonly DependencyProperty TtlStringProperty = DependencyProperty.Register(
+        //     "TtlString", typeof(string), typeof(TtlConfigurator),
+        //     new FrameworkPropertyMetadata("0101010101010101", TtlStringChangeCallBack));
+        //
+        // private static void TtlStringChangeCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        // {
+        //     TtlConfigurator configurator = d as TtlConfigurator;
+        //     configurator?.PropertiesChangeOperate();
+        // }
+        //
+        // [Category("Data")]
+        // [DisplayName("TTL文本")]
+        // public string TtlString
+        // {
+        //     get { return (string) this.GetValue(TtlStringProperty); }
+        //     set { this.SetValue(TtlStringProperty, value); }
+        // }
 
         #endregion
 
@@ -298,13 +302,13 @@ namespace IndustryControls4WPF.Controls.Digital
         /// <param name="e"></param>
         private void SettingMenu_OnClick(object sender, RoutedEventArgs e)
         {
-            TtlSettingWindow settingWindow = new TtlSettingWindow() {TtlString = this.TtlString};
-
-            settingWindow.ShowDialog();
-            if (settingWindow.DialogResult == true)
-            {
-                this.TtlString = settingWindow.ResultTtlString;
-            }
+            // TtlSettingWindow settingWindow = new TtlSettingWindow() {TtlString = this.TtlString};
+            //
+            // settingWindow.ShowDialog();
+            // if (settingWindow.DialogResult == true)
+            // {
+            //     this.TtlString = settingWindow.ResultTtlString;
+            // }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -314,5 +318,18 @@ namespace IndustryControls4WPF.Controls.Digital
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        public static ObservableCollection<TtlSection> DefaulTtlSections=new ObservableCollection<TtlSection>()
+        {
+            new TtlSection()
+            {
+                Length = 32,
+                Status = TtlStatus.High
+            },
+            new TtlSection()
+            {
+                Length = 32,
+                Status = TtlStatus.Low
+            }
+        };
     }
 }

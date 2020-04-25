@@ -58,8 +58,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="TTL\TTLCell.cs" />
-    <Compile Include="TTL\TTLCellStatus.cs" />
+    <Compile Include="TTL\TTLStatus.cs" />
+    <Compile Include="TTL\TtlSection.cs" />
     <Compile Include="TTL\TtlSettingWindow.xaml.cs">
       <DependentUpon>TtlSettingWindow.xaml</DependentUpon>
     </Compile>

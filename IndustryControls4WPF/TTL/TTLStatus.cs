@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IndustryControls4WPF.TTL
 {
-    public enum TtlCellStatus
+    public enum TtlStatus
     {
         High,Low
     }

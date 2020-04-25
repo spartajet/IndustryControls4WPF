@@ -62,7 +62,7 @@ namespace IndustryControls4WPF.TTL
         /// <summary>
         /// ttl单元list
         /// </summary>
-        public List<TtlCell> Cells { get; set; }
+        // public List<TtlCell> Cells { get; set; }
 
         /// <summary>
         /// ttl高电平单元list

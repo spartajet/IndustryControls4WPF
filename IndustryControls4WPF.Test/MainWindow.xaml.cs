@@ -27,7 +27,7 @@ namespace IndustryControls4WPF.Test
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            this.TtlConfigurator.TtlString = "0011001010110110";
+            // this.TtlConfigurator.TtlString = "0011001010110110";
         }
     }
 }

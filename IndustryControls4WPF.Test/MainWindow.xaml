@@ -11,7 +11,7 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <digital:TtlConfigurator x:Name="TtlConfigurator" Margin="10" Title="MM码形配置" TtlString="11010001111100011101011011010011001100111100100101"></digital:TtlConfigurator>
+        <digital:TtlConfigurator x:Name="TtlConfigurator" Margin="10" Title="MM码形配置"></digital:TtlConfigurator>
         <Button Content="删除" Grid.Row="1" Click="ButtonBase_OnClick"></Button>
     </Grid>
 </Window>
