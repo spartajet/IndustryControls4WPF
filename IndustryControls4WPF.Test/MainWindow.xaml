@@ -6,13 +6,16 @@
         xmlns:digital="clr-namespace:IndustryControls4WPF.Controls.Digital;assembly=IndustryControls4WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="260" Width="660">
+    <Window.DataContext>
+        <Binding RelativeSource="{RelativeSource Self}"></Binding>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="30"></RowDefinition>
         </Grid.RowDefinitions>
-        <digital:TtlConfigurator x:Name="TtlConfigurator" Margin="10" Title="MM码形配置" ScaleInterval="8"></digital:TtlConfigurator>
-        <Button Content="删除" Grid.Row="1" Click="ButtonBase_OnClick"></Button>
+        <digital:TtlConfigurator x:Name="TtlConfigurator" Margin="10" Title="MM码形配置" ScaleInterval="8" ></digital:TtlConfigurator>
+        <Button Content="操作" Grid.Row="1" Click="ButtonBase_OnClick"></Button>
     </Grid>
 </Window>
 

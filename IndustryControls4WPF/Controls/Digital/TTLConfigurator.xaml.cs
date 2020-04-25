@@ -60,6 +60,10 @@ namespace IndustryControls4WPF.Controls.Digital
         /// <param name="e"></param>
         private void TTLConfigurator_Loaded(object sender, RoutedEventArgs e)
         {
+            if (this.TtlSections==null||this.TtlSections.Count==0)
+            {
+                return;
+            }
             this.CellOperate();
             //绘制图形
             this.RefreshUnitSize();
@@ -232,11 +236,12 @@ namespace IndustryControls4WPF.Controls.Digital
         [DisplayName("Section")]
         public ObservableCollection<TtlSection> TtlSections
         {
-            get
+            get => (ObservableCollection<TtlSection>) this.GetValue(TtlSectionProperty);
+            set
             {
-                return (ObservableCollection<TtlSection>) GetValue(TtlSectionProperty);
+                this.SetValue(TtlSectionProperty, value);
+                this.PropertiesChangeOperate();
             }
-            set { SetValue(TtlSectionProperty, value); }
         }
 
         public static readonly DependencyProperty ScaleIntervalProperty = DependencyProperty.Register(
@@ -255,24 +260,6 @@ namespace IndustryControls4WPF.Controls.Digital
         }
 
         #region TTLString依赖配置项
-
-        // public static readonly DependencyProperty TtlStringProperty = DependencyProperty.Register(
-        //     "TtlString", typeof(string), typeof(TtlConfigurator),
-        //     new FrameworkPropertyMetadata("0101010101010101", TtlStringChangeCallBack));
-        //
-        // private static void TtlStringChangeCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        // {
-        //     TtlConfigurator configurator = d as TtlConfigurator;
-        //     configurator?.PropertiesChangeOperate();
-        // }
-        //
-        // [Category("Data")]
-        // [DisplayName("TTL文本")]
-        // public string TtlString
-        // {
-        //     get { return (string) this.GetValue(TtlStringProperty); }
-        //     set { this.SetValue(TtlStringProperty, value); }
-        // }
 
         #endregion
 
