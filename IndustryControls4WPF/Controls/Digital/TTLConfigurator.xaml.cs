@@ -330,6 +330,12 @@ namespace IndustryControls4WPF.Controls.Digital
             // {
             //     this.TtlString = settingWindow.ResultTtlString;
             // }
+            TtlSignalSettingWindow ttlSignalSettingWindow=new TtlSignalSettingWindow(this.TitleString,this.TtlSections);
+            ttlSignalSettingWindow.ShowDialog();
+            if (ttlSignalSettingWindow.DialogResult==true)
+            {
+                this.TtlSections = ttlSignalSettingWindow.TtlSections;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

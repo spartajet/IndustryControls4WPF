@@ -11,10 +11,6 @@
             <Setter Property="Control.Margin" Value="3" />
         </Style>
         <Style TargetType="TextBox" BasedOn="{StaticResource OperateRegionStyle}">
-            <!--            <Setter Property="VerticalAlignment" Value="Center" />-->
-            <!--            <Setter Property="HorizontalAlignment" Value="Center" />-->
-            <!--            <Setter Property="Height" Value="26"></Setter>-->
-            <!--            <Setter Property="Width" Value="30"></Setter>-->
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type TextBox}">
