@@ -58,6 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="TTL\NewSettingWindow.xaml.cs">
+      <DependentUpon>NewSettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="TTL\TtlSignalSettingWindow.xaml.cs">
       <DependentUpon>TtlSignalSettingWindow.xaml</DependentUpon>
     </Compile>
@@ -75,6 +78,10 @@
     <Compile Include="Controls\Digital\TTLConfigurator.xaml.cs">
       <DependentUpon>TTLConfigurator.xaml</DependentUpon>
     </Compile>
+    <Page Include="TTL\NewSettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="TTL\TtlSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

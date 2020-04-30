@@ -10,6 +10,6 @@ namespace IndustryControls4WPF.TTL
     {
         public string Name { get; set; }
         public int Repeat { get; set; }
-        public List<TtlSection> TtlSections;
+        public List<TtlSection> TtlSections { get; set; }=new List<TtlSection>();
     }
 }

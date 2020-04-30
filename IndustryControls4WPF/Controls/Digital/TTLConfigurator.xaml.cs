@@ -329,20 +329,12 @@ namespace IndustryControls4WPF.Controls.Digital
         /// <param name="e"></param>
         private void SettingMenu_OnClick(object sender, RoutedEventArgs e)
         {
-            // TtlSettingWindow settingWindow = new TtlSettingWindow() {TtlString = this.TtlString};
-            //
-            // settingWindow.ShowDialog();
-            // if (settingWindow.DialogResult == true)
-            // {
-            //     this.TtlString = settingWindow.ResultTtlString;
-            // }
-            // TtlSignalSettingWindow ttlSignalSettingWindow =
-            //     new TtlSignalSettingWindow(this.TitleString, this.TtlSections);
-            // ttlSignalSettingWindow.ShowDialog();
-            // if (ttlSignalSettingWindow.DialogResult == true)
-            // {
-            //     this.TtlSections = ttlSignalSettingWindow.TtlSections;
-            // }
+            NewSettingWindow newSettingWindow=new NewSettingWindow(this.Title,this.TtlStages);
+            newSettingWindow.ShowDialog();
+            if (newSettingWindow.DialogResult==true)
+            {
+                this.TtlStages = newSettingWindow.TtlStages;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
