@@ -30,6 +30,7 @@ namespace IndustryControls4WPF.Controls.Digital
         private int _unitHeight;
 
         private int _unitWidth;
+        private int _minUnitWidth = 5;
 
         // private PathFigure _figure;
         // private PathGeometry _pathGeometry;
@@ -149,6 +150,11 @@ namespace IndustryControls4WPF.Controls.Digital
             double totalCount = this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum()*2;
             this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 1;
             this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / totalCount);
+            if (this._unitWidth<this._minUnitWidth)
+            {
+                this.TtlCanvas.Width = this._minUnitWidth * totalCount;
+                this._unitWidth = this._minUnitWidth;
+            }
         }
 
         /// <summary>

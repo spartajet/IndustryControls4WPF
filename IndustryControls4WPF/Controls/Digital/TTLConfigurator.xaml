@@ -40,14 +40,15 @@
                       Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-26}"
                       Stroke="Black" StrokeThickness="1" />
             </Canvas>
-
-            <Canvas Name="TtlCanvas" Background="White" Grid.Column="1" Grid.Row="1">
-                <Canvas.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Name="SettingMenu" Header="配置码形" Click="SettingMenu_OnClick" />
-                    </ContextMenu>
-                </Canvas.ContextMenu>
-            </Canvas>
+            <ScrollViewer Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <Canvas Name="TtlCanvas" Background="White" Grid.Column="1" Grid.Row="1">
+                    <Canvas.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Name="SettingMenu" Header="配置码形" Click="SettingMenu_OnClick" />
+                        </ContextMenu>
+                    </Canvas.ContextMenu>
+                </Canvas>
+            </ScrollViewer>
             <Canvas Name="BottomCanvas" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Background="White">
                 <Line Name="XLine" X1="-20" Y1="5"
                       X2="{Binding ElementName=BottomCanvas,Path=ActualWidth,Converter={StaticResource math},ConverterParameter=x}"
