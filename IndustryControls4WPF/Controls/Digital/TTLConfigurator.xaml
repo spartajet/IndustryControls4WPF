@@ -29,15 +29,15 @@
             <Label Name="TitleLable" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="0" FontSize="10" Content="{Binding Title}"></Label>
             <Canvas Name="LeftCanvas" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" Background="White">
                 <TextBlock Text="H" Canvas.Top="18" Canvas.Left="5" />
-                <TextBlock Text="L" Canvas.Bottom="19" Canvas.Left="5" />
+                <TextBlock Text="L" Canvas.Bottom="40" Canvas.Left="5" />
                 <Line X1="19" X2="19" Y1="10"
                       Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-10}"
                       StrokeThickness="1" Stroke="Black" />
                 <Line X1="15" Y1="25" X2="19" Y2="25" Stroke="Black" StrokeThickness="1" />
                 <Line X1="15"
-                      Y1="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-26}"
+                      Y1="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-50}"
                       X2="19"
-                      Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-26}"
+                      Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-50}"
                       Stroke="Black" StrokeThickness="1" />
             </Canvas>
             <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
