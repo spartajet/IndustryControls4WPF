@@ -32,23 +32,7 @@ namespace IndustryControls4WPF.Controls.Digital
         private int _unitWidth;
         private int _minUnitWidth = 5;
 
-        // private PathFigure _figure;
-        // private PathGeometry _pathGeometry;
-        // private Path _path;
-        private string _titleString = "TTL Setting";
-        // public static ObservableCollection<TtlSection> DefaulTtlSections { get; set; } = new ObservableCollection<TtlSection>()
-        // {
-        //     new TtlSection()
-        //     {
-        //         Length = 32,
-        //         Status = TtlStatus.High
-        //     },
-        //     new TtlSection()
-        //     {
-        //         Length = 32,
-        //         Status = TtlStatus.Low
-        //     }
-        // };
+        // private string _titleString = "TTL Setting";
 
         public static ObservableCollection<TtlStage> DefaultTtlStage { get; set; } =
             new ObservableCollection<TtlStage>()
@@ -147,12 +131,14 @@ namespace IndustryControls4WPF.Controls.Digital
         private void RefreshUnitSize()
         {
             // int totalCount = this.TtlSections.Select(t => t.Length).Sum();
-            double totalCount = this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum()*2;
+            double totalCount =
+                this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum() * 2;
             this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 1;
             this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / totalCount);
-            if (this._unitWidth<this._minUnitWidth)
+            if (this._unitWidth < this._minUnitWidth)
             {
                 this.TtlCanvas.Width = this._minUnitWidth * totalCount;
+                this.BottomCanvas.Width = this._minUnitWidth * totalCount;
                 this._unitWidth = this._minUnitWidth;
             }
         }
@@ -192,7 +178,7 @@ namespace IndustryControls4WPF.Controls.Digital
                         int sectionStartX = tempCellCount * this._unitWidth;
                         int sectionStartY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
                         polyline.Points.Add(new Point(sectionStartX, sectionStartY));
-                        tempCellCount += (int)(section.Length*2);
+                        tempCellCount += (int) (section.Length * 2);
                         int cellEndPointX = tempCellCount * this._unitWidth;
                         int cellEndPointY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
                         polyline.Points.Add(new Point(cellEndPointX, cellEndPointY));
@@ -233,7 +219,8 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void DrawXScale()
         {
-            double totalCount = this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum()*2;
+            double totalCount =
+                this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum() * 2;
             for (int i = 0; i < this.BottomCanvas.Children.Count; i++)
             {
                 Line line = this.BottomCanvas.Children[i] as Line;
@@ -247,7 +234,7 @@ namespace IndustryControls4WPF.Controls.Digital
 
             for (int i = 0; i < totalCount; i++)
             {
-                int scaleHeight = (i + 1) % (this.ScaleInterval*2) == 0 ? 10 : 5;
+                int scaleHeight = (i + 1) % (this.ScaleInterval * 2) == 0 ? 10 : 5;
                 Line tempScaleLine = new Line
                 {
                     X1 = this._unitWidth * (i + 1),
@@ -258,16 +245,19 @@ namespace IndustryControls4WPF.Controls.Digital
                     StrokeThickness = 1
                 };
                 this.BottomCanvas.Children.Add(tempScaleLine);
-                if ((i + 1) % (this.ScaleInterval*2) == 0)
+                if ((i + 1) % (this.ScaleInterval * 2) == 0)
                 {
                     TextBlock scaleText = new TextBlock
                     {
-                        Text = ((i + 1)/2).ToString(),
+                        Text = ((i + 1) / 2).ToString(),
                         FontSize = 8
                     };
                     this.BottomCanvas.Children.Add(scaleText);
-                    Canvas.SetRight(scaleText, this.ActualWidth - this._unitWidth * (i + 1) - 20);
-                    Canvas.SetBottom(scaleText, 3);
+                    Canvas.SetTop(scaleText, 13);
+                    Canvas.SetLeft(scaleText, this._unitWidth * (i + 1) - scaleText.ActualWidth);
+                    // this.BottomCanvas.Children.Add()
+                    // Canvas.SetRight(scaleText, this.BottomCanvas.ActualWidth - this._unitWidth * (i + 1) - 20);
+                    // Canvas.SetBottom(scaleText, 3);
                 }
             }
         }
@@ -371,7 +361,7 @@ namespace IndustryControls4WPF.Controls.Digital
         {
             TtlConfigurator configurator = d as TtlConfigurator;
             // configurator.TitleLable.Content = configurator.Title;
-            configurator.TitleString = configurator.Title;
+            // configurator.TitleString = configurator.Title;
         }
 
         [Category("Data")]
@@ -379,18 +369,23 @@ namespace IndustryControls4WPF.Controls.Digital
         public string Title
         {
             get => (string) this.GetValue(TitleProperty);
-            set => this.SetValue(TitleProperty, value);
-        }
-
-        public string TitleString
-        {
-            get => this._titleString;
             set
             {
-                this._titleString = value;
-                this.OnPropertyChanged("TitleString");
+                this.SetValue(TitleProperty, value);
+                // this.PropertiesChangeOperate();
+                this.OnPropertyChanged();
             }
         }
+        //
+        // public string TitleString
+        // {
+        //     get => this._titleString;
+        //     set
+        //     {
+        //         this._titleString = value;
+        //         this.OnPropertyChanged("TitleString");
+        //     }
+        // }
 
         #endregion
 
