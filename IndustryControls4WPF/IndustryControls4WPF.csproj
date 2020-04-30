@@ -61,6 +61,7 @@
     <Compile Include="TTL\TtlSignalSettingWindow.xaml.cs">
       <DependentUpon>TtlSignalSettingWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TTL\TtlStage.cs" />
     <Compile Include="TTL\TTLStatus.cs" />
     <Compile Include="TTL\TtlSection.cs" />
     <Compile Include="TTL\TtlSettingWindow.xaml.cs">

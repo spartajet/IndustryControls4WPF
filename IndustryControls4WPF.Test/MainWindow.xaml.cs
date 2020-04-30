@@ -26,11 +26,11 @@ namespace IndustryControls4WPF.Test
     /// </summary>
     public partial class MainWindow : Window,INotifyPropertyChanged
     {
-        private ObservableCollection<TtlSection> _ttlSections=Controls.Digital.TtlConfigurator.DefaulTtlSections;
+        // private ObservableCollection<TtlSection> _ttlSections=Controls.Digital.TtlConfigurator.DefaulTtlSections;
         public MainWindow()
         {
             InitializeComponent();
-            this.TtlConfigurator.TtlSections = this._ttlSections;
+            // this.TtlConfigurator.TtlSections = this._ttlSections;
         }
 
         
@@ -38,12 +38,12 @@ namespace IndustryControls4WPF.Test
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             // this.TtlConfigurator.TtlString = "0011001010110110";
-            this._ttlSections.Add(new TtlSection()
-            {
-                Length = 32,
-                Status = TtlStatus.High
-            });
-            this.TtlConfigurator.TtlSections = this._ttlSections;
+            // this._ttlSections.Add(new TtlSection()
+            // {
+            //     Length = 32,
+            //     Status = TtlStatus.High
+            // });
+            // this.TtlConfigurator.TtlSections = this._ttlSections;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

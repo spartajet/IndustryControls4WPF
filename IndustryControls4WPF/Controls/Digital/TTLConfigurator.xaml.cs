@@ -17,7 +17,7 @@ namespace IndustryControls4WPF.Controls.Digital
     /// <summary>
     /// TTLConfigurator.xaml 的交互逻辑
     /// </summary>
-    public partial class TtlConfigurator : UserControl,INotifyPropertyChanged
+    public partial class TtlConfigurator : UserControl, INotifyPropertyChanged
     {
         public TtlConfigurator()
         {
@@ -28,28 +28,72 @@ namespace IndustryControls4WPF.Controls.Digital
 
 
         private int _unitHeight;
+
         private int _unitWidth;
+
         // private PathFigure _figure;
         // private PathGeometry _pathGeometry;
         // private Path _path;
-        private string _titleString="TTL Setting";
-        public static ObservableCollection<TtlSection> DefaulTtlSections { get; set; } = new ObservableCollection<TtlSection>()
-        {
-            new TtlSection()
+        private string _titleString = "TTL Setting";
+        // public static ObservableCollection<TtlSection> DefaulTtlSections { get; set; } = new ObservableCollection<TtlSection>()
+        // {
+        //     new TtlSection()
+        //     {
+        //         Length = 32,
+        //         Status = TtlStatus.High
+        //     },
+        //     new TtlSection()
+        //     {
+        //         Length = 32,
+        //         Status = TtlStatus.Low
+        //     }
+        // };
+
+        public static ObservableCollection<TtlStage> DefaultTtlStage { get; set; } =
+            new ObservableCollection<TtlStage>()
             {
-                Length = 32,
-                Status = TtlStatus.High
-            },
-            new TtlSection()
-            {
-                Length = 32,
-                Status = TtlStatus.Low
-            }
-        };
-        /// <summary>
-        /// TTL 片段对象
-        /// </summary>
-        // public List<TtlSection> TtlSections { get; set; } = DefaulTtlSections.ToList();
+                new TtlStage()
+                {
+                    Name = "Delay",
+                    Repeat = 1,
+                    TtlSections = new List<TtlSection>(3)
+                    {
+                        new TtlSection()
+                        {
+                            Length = 2,
+                            Status = TtlStatus.Low
+                        },
+                        new TtlSection()
+                        {
+                            Length = 2.5,
+                            Status = TtlStatus.High
+                        },
+                        new TtlSection()
+                        {
+                            Length = 5,
+                            Status = TtlStatus.Low
+                        }
+                    },
+                },
+                new TtlStage()
+                {
+                    Name = "Work",
+                    Repeat = 3,
+                    TtlSections = new List<TtlSection>(2)
+                    {
+                        new TtlSection()
+                        {
+                            Length = 32,
+                            Status = TtlStatus.High
+                        },
+                        new TtlSection()
+                        {
+                            Length = 32,
+                            Status = TtlStatus.Low
+                        }
+                    }
+                }
+            };
 
         // private int _scaleInterval = 4;
 
@@ -60,10 +104,11 @@ namespace IndustryControls4WPF.Controls.Digital
         /// <param name="e"></param>
         private void TTLConfigurator_Loaded(object sender, RoutedEventArgs e)
         {
-            if (this.TtlSections==null||this.TtlSections.Count==0)
+            if (this.TtlStages == null || this.TtlStages.Count == 0)
             {
                 return;
             }
+
             this.CellOperate();
             //绘制图形
             this.RefreshUnitSize();
@@ -100,8 +145,9 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void RefreshUnitSize()
         {
-            int totalCount = this.TtlSections.Select(t => t.Length).Sum();
-            this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight)-1;
+            // int totalCount = this.TtlSections.Select(t => t.Length).Sum();
+            double totalCount = this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum()*2;
+            this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 1;
             this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / totalCount);
         }
 
@@ -122,7 +168,7 @@ namespace IndustryControls4WPF.Controls.Digital
         {
             // this._figure.Segments.Clear();
             this.TtlCanvas.Children.Clear();
-            Polyline polyline=new Polyline()
+            Polyline polyline = new Polyline()
             {
                 Stroke = Brushes.Black
             };
@@ -130,17 +176,35 @@ namespace IndustryControls4WPF.Controls.Digital
             //     ? new Point(0, 0)
             //     : new Point(0, this._unitHeight);
             int tempCellCount = 0;
-            foreach (TtlSection section in this.TtlSections)
+            foreach (TtlStage ttlStage in this.TtlStages)
             {
-                TtlStatus sectionStatus = section.Status;
-                int sectionStartX = tempCellCount * this._unitWidth;
-                int sectionStartY= sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
-                polyline.Points.Add(new Point(sectionStartX, sectionStartY));
-                tempCellCount += section.Length;
-                int cellEndPointX = tempCellCount * this._unitWidth;
-                int cellEndPointY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
-                polyline.Points.Add(new Point(cellEndPointX, cellEndPointY));
+                for (int i = 0; i < ttlStage.Repeat; i++)
+                {
+                    foreach (TtlSection section in ttlStage.TtlSections)
+                    {
+                        TtlStatus sectionStatus = section.Status;
+                        int sectionStartX = tempCellCount * this._unitWidth;
+                        int sectionStartY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
+                        polyline.Points.Add(new Point(sectionStartX, sectionStartY));
+                        tempCellCount += (int)(section.Length*2);
+                        int cellEndPointX = tempCellCount * this._unitWidth;
+                        int cellEndPointY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
+                        polyline.Points.Add(new Point(cellEndPointX, cellEndPointY));
+                    }
+                }
             }
+            // foreach (TtlSection section in this.TtlSections)
+            // {
+            //     TtlStatus sectionStatus = section.Status;
+            //     int sectionStartX = tempCellCount * this._unitWidth;
+            //     int sectionStartY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
+            //     polyline.Points.Add(new Point(sectionStartX, sectionStartY));
+            //     tempCellCount += section.Length;
+            //     int cellEndPointX = tempCellCount * this._unitWidth;
+            //     int cellEndPointY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
+            //     polyline.Points.Add(new Point(cellEndPointX, cellEndPointY));
+            // }
+
             // this._pathGeometry.Figures.Add(this._figure);
             // this._path.Data = this._pathGeometry;
             // this._path.Stroke = Brushes.Black;
@@ -157,12 +221,13 @@ namespace IndustryControls4WPF.Controls.Digital
             this.DrawTtl();
             this.DrawXScale();
         }
+
         /// <summary>
         /// 绘制Scale
         /// </summary>
         private void DrawXScale()
         {
-            int totalCount = this.TtlSections.Select(t => t.Length).Sum();
+            double totalCount = this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum()*2;
             for (int i = 0; i < this.BottomCanvas.Children.Count; i++)
             {
                 Line line = this.BottomCanvas.Children[i] as Line;
@@ -176,7 +241,7 @@ namespace IndustryControls4WPF.Controls.Digital
 
             for (int i = 0; i < totalCount; i++)
             {
-                int scaleHeight = (i + 1) % this.ScaleInterval == 0 ? 10 : 5;
+                int scaleHeight = (i + 1) % (this.ScaleInterval*2) == 0 ? 10 : 5;
                 Line tempScaleLine = new Line
                 {
                     X1 = this._unitWidth * (i + 1),
@@ -187,20 +252,19 @@ namespace IndustryControls4WPF.Controls.Digital
                     StrokeThickness = 1
                 };
                 this.BottomCanvas.Children.Add(tempScaleLine);
-                if ((i + 1) % this.ScaleInterval == 0)
+                if ((i + 1) % (this.ScaleInterval*2) == 0)
                 {
                     TextBlock scaleText = new TextBlock
                     {
-                        Text = ((i + 1)).ToString(),
+                        Text = ((i + 1)/2).ToString(),
                         FontSize = 8
                     };
                     this.BottomCanvas.Children.Add(scaleText);
-                    Canvas.SetRight(scaleText, this.ActualWidth - this._unitWidth * (i + 1)-20);
+                    Canvas.SetRight(scaleText, this.ActualWidth - this._unitWidth * (i + 1) - 20);
                     Canvas.SetBottom(scaleText, 3);
                 }
             }
         }
-
 
 
         #region TTL的thickness依赖配置项(未使用)
@@ -214,6 +278,7 @@ namespace IndustryControls4WPF.Controls.Digital
             TtlConfigurator configurator = d as TtlConfigurator;
             configurator?.PropertiesChangeOperate();
         }
+
         [Category("Data")]
         [DisplayName("线条粗细")]
         public int Thickness
@@ -224,28 +289,51 @@ namespace IndustryControls4WPF.Controls.Digital
 
         #endregion
 
-        public static readonly DependencyProperty TtlSectionProperty = DependencyProperty.Register(
-            "PropertyType", typeof(ObservableCollection<TtlSection>), typeof(TtlConfigurator), new FrameworkPropertyMetadata(defaultValue: DefaulTtlSections, TtlSectionPropertyCallBack));
+        #region TtlStage
 
-        private static void TtlSectionPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            TtlConfigurator configurator = d as TtlConfigurator;
-            // configurator.TtlSections = ((ObservableCollection<TtlSection>)(e.NewValue)).ToList();
-        }
+        public static readonly DependencyProperty TtlStagesTypeProperty = DependencyProperty.Register(
+            "PropertyType", typeof(ObservableCollection<TtlStage>), typeof(TtlConfigurator),
+            new PropertyMetadata(DefaultTtlStage));
+
         [Category("Data")]
-        [DisplayName("Section")]
-        public ObservableCollection<TtlSection> TtlSections
+        [DisplayName("Stages")]
+        public ObservableCollection<TtlStage> TtlStages
         {
-            get => (ObservableCollection<TtlSection>) this.GetValue(TtlSectionProperty);
+            get => (ObservableCollection<TtlStage>) this.GetValue(TtlStagesTypeProperty);
             set
             {
-                this.SetValue(TtlSectionProperty, value);
+                this.SetValue(TtlStagesTypeProperty, value);
                 this.PropertiesChangeOperate();
             }
         }
 
+        #endregion
+
+        // public static readonly DependencyProperty TtlSectionProperty = DependencyProperty.Register(
+        //     "PropertyType", typeof(ObservableCollection<TtlSection>), typeof(TtlConfigurator),
+        //     new FrameworkPropertyMetadata(defaultValue: DefaulTtlSections, TtlSectionPropertyCallBack));
+        //
+        // private static void TtlSectionPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        // {
+        //     TtlConfigurator configurator = d as TtlConfigurator;
+        //     // configurator.TtlSections = ((ObservableCollection<TtlSection>)(e.NewValue)).ToList();
+        // }
+        //
+        // [Category("Data")]
+        // [DisplayName("Section")]
+        // public ObservableCollection<TtlSection> TtlSections
+        // {
+        //     get => (ObservableCollection<TtlSection>) this.GetValue(TtlSectionProperty);
+        //     set
+        //     {
+        //         this.SetValue(TtlSectionProperty, value);
+        //         this.PropertiesChangeOperate();
+        //     }
+        // }
+
         public static readonly DependencyProperty ScaleIntervalProperty = DependencyProperty.Register(
-            "ScaleInterval", typeof(int), typeof(TtlConfigurator), new FrameworkPropertyMetadata(4,ScaleIntervalPropertyCallBack));
+            "ScaleInterval", typeof(int), typeof(TtlConfigurator),
+            new FrameworkPropertyMetadata(4, ScaleIntervalPropertyCallBack));
 
         private static void ScaleIntervalPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -256,7 +344,11 @@ namespace IndustryControls4WPF.Controls.Digital
         public int ScaleInterval
         {
             get { return (int) GetValue(ScaleIntervalProperty); }
-            set { SetValue(ScaleIntervalProperty, value); }
+            set
+            {
+                SetValue(ScaleIntervalProperty, value);
+                this.PropertiesChangeOperate();
+            }
         }
 
         #region TTLString依赖配置项
@@ -330,12 +422,13 @@ namespace IndustryControls4WPF.Controls.Digital
             // {
             //     this.TtlString = settingWindow.ResultTtlString;
             // }
-            TtlSignalSettingWindow ttlSignalSettingWindow=new TtlSignalSettingWindow(this.TitleString,this.TtlSections);
-            ttlSignalSettingWindow.ShowDialog();
-            if (ttlSignalSettingWindow.DialogResult==true)
-            {
-                this.TtlSections = ttlSignalSettingWindow.TtlSections;
-            }
+            // TtlSignalSettingWindow ttlSignalSettingWindow =
+            //     new TtlSignalSettingWindow(this.TitleString, this.TtlSections);
+            // ttlSignalSettingWindow.ShowDialog();
+            // if (ttlSignalSettingWindow.DialogResult == true)
+            // {
+            //     this.TtlSections = ttlSignalSettingWindow.TtlSections;
+            // }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -345,6 +438,5 @@ namespace IndustryControls4WPF.Controls.Digital
         {
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-        
     }
 }
