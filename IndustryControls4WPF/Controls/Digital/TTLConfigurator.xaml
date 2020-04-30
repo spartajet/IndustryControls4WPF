@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:IndustryControls4WPF.Controls.Digital"
              xmlns:math="http://hexinnovation.com/math"
              mc:Ignorable="d"
-             d:DesignHeight="200" d:DesignWidth="600">
+             d:DesignHeight="200" d:DesignWidth="600" MinHeight="50">
     <UserControl.Resources>
         <math:MathConverter x:Key="math" />
     </UserControl.Resources>

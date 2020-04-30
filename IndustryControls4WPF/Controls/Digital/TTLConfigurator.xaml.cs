@@ -22,7 +22,7 @@ namespace IndustryControls4WPF.Controls.Digital
         public TtlConfigurator()
         {
             this.InitializeComponent();
-            this.InitGraphicToolKit();
+            // this.InitGraphicToolKit();
             this.Loaded += this.TTLConfigurator_Loaded;
         }
 
@@ -94,7 +94,6 @@ namespace IndustryControls4WPF.Controls.Digital
                 return;
             }
 
-            this.CellOperate();
             //绘制图形
             this.RefreshUnitSize();
             this.DrawTtl();
@@ -102,28 +101,6 @@ namespace IndustryControls4WPF.Controls.Digital
             this.SizeChanged += this.TtlConfigurator_SizeChanged;
         }
 
-
-        private void CellOperate()
-        {
-            //解析设置的码形
-            // char[] cs = this.TtlString.ToCharArray();
-            // this.TtlCells = new List<TtlCell>(cs.Length);
-            // for (int i = 0; i < cs.Length; i++)
-            // {
-            //     char c = cs[i];
-            //     switch (c)
-            //     {
-            //         case '0':
-            //             this.TtlCells.Add(new TtlCell(i, TtlCellStatus.Low));
-            //             break;
-            //         case '1':
-            //             this.TtlCells.Add(new TtlCell(i, TtlCellStatus.High));
-            //             break;
-            //         default:
-            //             throw new System.IO.InvalidDataException("TTL 字符串不符合要求，请重新输入");
-            //     }
-            // }
-        }
 
         /// <summary>
         /// 刷新电平单元的长和宽
@@ -133,24 +110,19 @@ namespace IndustryControls4WPF.Controls.Digital
             // int totalCount = this.TtlSections.Select(t => t.Length).Sum();
             double totalCount =
                 this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum() * 2;
-            this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 1;
             this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / totalCount);
             if (this._unitWidth < this._minUnitWidth)
             {
                 this.TtlCanvas.Width = this._minUnitWidth * totalCount;
                 this.BottomCanvas.Width = this._minUnitWidth * totalCount;
                 this._unitWidth = this._minUnitWidth;
+                this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 20;
             }
-        }
+            else
+            {
+                this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 5;
+            }
 
-        /// <summary>
-        /// 初始化绘图工具
-        /// </summary>
-        private void InitGraphicToolKit()
-        {
-            // this._path = new Path();
-            // this._pathGeometry = new PathGeometry();
-            // this._figure = new PathFigure();
         }
 
         /// <summary>
@@ -158,15 +130,12 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void DrawTtl()
         {
-            // this._figure.Segments.Clear();
             this.TtlCanvas.Children.Clear();
             Polyline polyline = new Polyline()
             {
-                Stroke = Brushes.Black
+                Stroke = Brushes.Black,
+                StrokeThickness = 1
             };
-            // this._figure.StartPoint = this.TtlSections[0].Status == TtlStatus.High
-            //     ? new Point(0, 0)
-            //     : new Point(0, this._unitHeight);
             int tempCellCount = 0;
             foreach (TtlStage ttlStage in this.TtlStages)
             {
@@ -185,21 +154,7 @@ namespace IndustryControls4WPF.Controls.Digital
                     }
                 }
             }
-            // foreach (TtlSection section in this.TtlSections)
-            // {
-            //     TtlStatus sectionStatus = section.Status;
-            //     int sectionStartX = tempCellCount * this._unitWidth;
-            //     int sectionStartY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
-            //     polyline.Points.Add(new Point(sectionStartX, sectionStartY));
-            //     tempCellCount += section.Length;
-            //     int cellEndPointX = tempCellCount * this._unitWidth;
-            //     int cellEndPointY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
-            //     polyline.Points.Add(new Point(cellEndPointX, cellEndPointY));
-            // }
 
-            // this._pathGeometry.Figures.Add(this._figure);
-            // this._path.Data = this._pathGeometry;
-            // this._path.Stroke = Brushes.Black;
             this.TtlCanvas.Children.Add(polyline);
         }
 
@@ -208,7 +163,7 @@ namespace IndustryControls4WPF.Controls.Digital
         /// </summary>
         private void PropertiesChangeOperate()
         {
-            this.CellOperate();
+            // this.CellOperate();
             this.RefreshUnitSize();
             this.DrawTtl();
             this.DrawXScale();
@@ -255,9 +210,6 @@ namespace IndustryControls4WPF.Controls.Digital
                     this.BottomCanvas.Children.Add(scaleText);
                     Canvas.SetTop(scaleText, 13);
                     Canvas.SetLeft(scaleText, this._unitWidth * (i + 1) - scaleText.ActualWidth);
-                    // this.BottomCanvas.Children.Add()
-                    // Canvas.SetRight(scaleText, this.BottomCanvas.ActualWidth - this._unitWidth * (i + 1) - 20);
-                    // Canvas.SetBottom(scaleText, 3);
                 }
             }
         }
@@ -304,28 +256,6 @@ namespace IndustryControls4WPF.Controls.Digital
         }
 
         #endregion
-
-        // public static readonly DependencyProperty TtlSectionProperty = DependencyProperty.Register(
-        //     "PropertyType", typeof(ObservableCollection<TtlSection>), typeof(TtlConfigurator),
-        //     new FrameworkPropertyMetadata(defaultValue: DefaulTtlSections, TtlSectionPropertyCallBack));
-        //
-        // private static void TtlSectionPropertyCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        // {
-        //     TtlConfigurator configurator = d as TtlConfigurator;
-        //     // configurator.TtlSections = ((ObservableCollection<TtlSection>)(e.NewValue)).ToList();
-        // }
-        //
-        // [Category("Data")]
-        // [DisplayName("Section")]
-        // public ObservableCollection<TtlSection> TtlSections
-        // {
-        //     get => (ObservableCollection<TtlSection>) this.GetValue(TtlSectionProperty);
-        //     set
-        //     {
-        //         this.SetValue(TtlSectionProperty, value);
-        //         this.PropertiesChangeOperate();
-        //     }
-        // }
 
         public static readonly DependencyProperty ScaleIntervalProperty = DependencyProperty.Register(
             "ScaleInterval", typeof(int), typeof(TtlConfigurator),
@@ -376,26 +306,9 @@ namespace IndustryControls4WPF.Controls.Digital
                 this.OnPropertyChanged();
             }
         }
-        //
-        // public string TitleString
-        // {
-        //     get => this._titleString;
-        //     set
-        //     {
-        //         this._titleString = value;
-        //         this.OnPropertyChanged("TitleString");
-        //     }
-        // }
 
         #endregion
 
-
-        protected override void OnRender(DrawingContext drawingContext)
-        {
-//            this.InitGraphicToolKit();
-//            this.DrawTtl();
-            base.OnRender(drawingContext);
-        }
 
         /// <summary>
         /// 大小改变事件
