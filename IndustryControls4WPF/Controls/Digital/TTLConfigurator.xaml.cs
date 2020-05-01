@@ -27,10 +27,10 @@ namespace IndustryControls4WPF.Controls.Digital
         }
 
 
-        private int _unitHeight;
+        private double _unitHeight;
 
-        private int _unitWidth;
-        private int _minUnitWidth = 5;
+        private double _unitWidth;
+        private double _minUnitWidth = 5;
 
         // private string _titleString = "TTL Setting";
 
@@ -111,10 +111,11 @@ namespace IndustryControls4WPF.Controls.Digital
             double totalCount =
                 this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum() * 2;
             this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / totalCount);
+            // this._unitWidth = Convert.ToInt32((this.Width - 40) / totalCount);
             if (this._unitWidth < this._minUnitWidth)
             {
-                this.TtlCanvas.Width = this._minUnitWidth * totalCount;
-                this.BottomCanvas.Width = this._minUnitWidth * totalCount;
+                // this.TtlCanvas.Width = this._minUnitWidth * totalCount;
+                // this.BottomCanvas.Width = this._minUnitWidth * totalCount;
                 this._unitWidth = this._minUnitWidth;
                 this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 20;
             }
@@ -122,7 +123,6 @@ namespace IndustryControls4WPF.Controls.Digital
             {
                 this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 5;
             }
-
         }
 
         /// <summary>
@@ -144,12 +144,12 @@ namespace IndustryControls4WPF.Controls.Digital
                     foreach (TtlSection section in ttlStage.TtlSections)
                     {
                         TtlStatus sectionStatus = section.Status;
-                        int sectionStartX = tempCellCount * this._unitWidth;
-                        int sectionStartY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
+                        double sectionStartX = tempCellCount * this._unitWidth;
+                        double sectionStartY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
                         polyline.Points.Add(new Point(sectionStartX, sectionStartY));
                         tempCellCount += (int) (section.Length * 2);
-                        int cellEndPointX = tempCellCount * this._unitWidth;
-                        int cellEndPointY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
+                        double cellEndPointX = tempCellCount * this._unitWidth;
+                        double cellEndPointY = sectionStatus == TtlStatus.High ? 0 : this._unitHeight;
                         polyline.Points.Add(new Point(cellEndPointX, cellEndPointY));
                     }
                 }
@@ -329,9 +329,9 @@ namespace IndustryControls4WPF.Controls.Digital
         /// <param name="e"></param>
         private void SettingMenu_OnClick(object sender, RoutedEventArgs e)
         {
-            NewSettingWindow newSettingWindow=new NewSettingWindow(this.Title,this.TtlStages);
+            NewSettingWindow newSettingWindow = new NewSettingWindow(this.Title, this.TtlStages);
             newSettingWindow.ShowDialog();
-            if (newSettingWindow.DialogResult==true)
+            if (newSettingWindow.DialogResult == true)
             {
                 this.TtlStages = newSettingWindow.TtlStages;
             }

@@ -27,10 +27,50 @@ namespace IndustryControls4WPF.Test
     public partial class MainWindow : Window,INotifyPropertyChanged
     {
         // private ObservableCollection<TtlSection> _ttlSections=Controls.Digital.TtlConfigurator.DefaulTtlSections;
+        private ObservableCollection<TtlStage> _ttlStages=new ObservableCollection<TtlStage>()
+        {
+            new TtlStage()
+            {
+                Name = "a",
+                Repeat = 100,
+                TtlSections = new List<TtlSection>(2)
+                {
+                    new TtlSection()
+                    {
+                        Length = 0.5,
+                        Status = TtlStatus.Low
+                    },
+                    new TtlSection()
+                    {
+                        Length = 0.5,
+                        Status = TtlStatus.High
+                    }
+                }
+            },
+            // new TtlStage()
+            // {
+            //     Name = "b",
+            //     Repeat = 10,
+            //     TtlSections = new List<TtlSection>(2)
+            //     {
+            //         new TtlSection()
+            //         {
+            //             Length = 20,
+            //             Status = TtlStatus.Low
+            //         },
+            //         new TtlSection()
+            //         {
+            //             Length = 50,
+            //             Status = TtlStatus.High
+            //         }
+            //     }
+            // },
+        };
         public MainWindow()
         {
             InitializeComponent();
             // this.TtlConfigurator.TtlSections = this._ttlSections;
+            this.TtlConfigurator.TtlStages = this._ttlStages;
         }
 
         
