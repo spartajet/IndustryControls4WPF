@@ -1,11 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netcoreapp3.1;net452;net462;net472</TargetFrameworks>
+    
     <UseWPF>true</UseWPF>
     <Version>3.0</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
 
     <!-- 如果你的项目是 Exe，则设为 WinExe；如果是 WPF 类库，则删掉这一行 -->
     <!-- <OutputType>WinExe</OutputType> -->
