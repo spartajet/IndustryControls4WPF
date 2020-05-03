@@ -8,6 +8,8 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/spartajet/IndustryControls4WPF</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/spartajet/IndustryControls4WPF</PackageProjectUrl>
 
     <!-- 如果你的项目是 Exe，则设为 WinExe；如果是 WPF 类库，则删掉这一行 -->
     <!-- <OutputType>WinExe</OutputType> -->
