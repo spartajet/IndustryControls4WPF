@@ -40,7 +40,7 @@
                       Y2="{Binding ElementName=LeftCanvas,Path=ActualHeight,Converter={StaticResource math},ConverterParameter=x-50}"
                       Stroke="Black" StrokeThickness="1" />
             </Canvas>
-            <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" HorizontalScrollBarVisibility="Visible"   VerticalScrollBarVisibility="Disabled">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>

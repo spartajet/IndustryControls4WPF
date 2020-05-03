@@ -114,13 +114,15 @@ namespace IndustryControls4WPF.Controls.Digital
             // this._unitWidth = Convert.ToInt32((this.Width - 40) / totalCount);
             if (this._unitWidth < this._minUnitWidth)
             {
-                // this.TtlCanvas.Width = this._minUnitWidth * totalCount;
-                // this.BottomCanvas.Width = this._minUnitWidth * totalCount;
+                this.TtlCanvas.Width = this._minUnitWidth * totalCount;
+                this.BottomCanvas.Width = this._minUnitWidth * totalCount;
                 this._unitWidth = this._minUnitWidth;
                 this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 20;
             }
             else
             {
+                this.TtlCanvas.Width = this.ActualWidth - 40;
+                this.BottomCanvas.Width = this.ActualWidth - 40;
                 this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 5;
             }
         }
