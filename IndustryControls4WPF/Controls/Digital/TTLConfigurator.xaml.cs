@@ -110,21 +110,23 @@ namespace IndustryControls4WPF.Controls.Digital
             // int totalCount = this.TtlSections.Select(t => t.Length).Sum();
             double totalCount =
                 this.TtlStages.Select(t => t.TtlSections.Select(t1 => t1.Length).Sum() * t.Repeat).Sum() * 2;
-            this._unitWidth = Convert.ToInt32(this.TtlCanvas.ActualWidth / totalCount);
+            this._unitWidth = this.TtlCanvas.ActualWidth * 1.0 / totalCount;
             // this._unitWidth = Convert.ToInt32((this.Width - 40) / totalCount);
             if (this._unitWidth < this._minUnitWidth)
             {
                 this.TtlCanvas.Width = this._minUnitWidth * totalCount;
                 this.BottomCanvas.Width = this._minUnitWidth * totalCount;
                 this._unitWidth = this._minUnitWidth;
-                this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 20;
+                // this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 20;
             }
             else
             {
                 this.TtlCanvas.Width = this.ActualWidth - 40;
                 this.BottomCanvas.Width = this.ActualWidth - 40;
-                this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 5;
+                // this._unitHeight = Convert.ToInt32(this.TtlCanvas.ActualHeight) - 5;
             }
+
+            this._unitHeight = this.TtlCanvas.ActualHeight - 5;
         }
 
         /// <summary>

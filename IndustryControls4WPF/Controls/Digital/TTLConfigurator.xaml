@@ -45,6 +45,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="25"></RowDefinition>
+                        <!-- <RowDefinition Height="17"></RowDefinition> -->
                     </Grid.RowDefinitions>
                     <Canvas Name="TtlCanvas" Background="White" Grid.Row="0">
                         <Canvas.ContextMenu>
