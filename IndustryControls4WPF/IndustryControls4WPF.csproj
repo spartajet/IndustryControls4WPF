@@ -14,6 +14,7 @@
     <Description>A TTL signal setting and display control for WPF.</Description>
     <Copyright>Copyright © 2001-2020 Xiaozhong Guo, All Rights Reserved</Copyright>
     <Authors>Dr. Xiaozhong Guo</Authors>
+    <PackageReleaseNotes>bugs fixed</PackageReleaseNotes>
 
     <!-- 如果你的项目是 Exe，则设为 WinExe；如果是 WPF 类库，则删掉这一行 -->
     <!-- <OutputType>WinExe</OutputType> -->
